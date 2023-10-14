@@ -15,8 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from chronos.views import PlaceViewSet, BookingAdminViewSet, CreateBookingViewSet
+
+
+router = DefaultRouter()
+router.register(r'admin/bookings', BookingAdminViewSet)
 
 urlpatterns = [
+    path('api/places/list/', PlaceViewSet.as_view({'get': 'list'}), name='place-list'),
+    path('api/bookings/create', CreateBookingViewSet.as_view({'post': 'create'}), name='create-booking'),
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
 ]
