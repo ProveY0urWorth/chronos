@@ -3,7 +3,6 @@ import { Form, Formik } from 'formik'
 import React from 'react'
 import styles from './BookingPage.module.scss'
 import classNames from 'classnames/bind'
-import { date } from 'yup'
 const cx = classNames.bind(styles)
 
 interface BookingPageProps {
@@ -13,8 +12,8 @@ interface BookingPageProps {
 interface IBookingForm {
   fullname: string
   phoneNumber: string
-  eventStart: Date
-  eventFinish: Date
+  eventStart: string
+  eventFinish: string
   technicalEquipment: string
   organizerInfo: string
   role: number
@@ -24,12 +23,12 @@ interface IBookingForm {
 const Initial_Values: IBookingForm = {
   fullname: '',
   phoneNumber: '',
-  eventStart: new Date(),
-  eventFinish: new Date(),
+  eventStart: '',
+  eventFinish: '',
   technicalEquipment: '',
   organizerInfo: '',
-  role: 1,
-  place: 2,
+  role: 0,
+  place: 0,
 }
 
 export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
@@ -54,7 +53,19 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                   onClick={submitForm}
                   className={cx('credentials__button')}
                 >
-                  'Сохранить'
+                  Отправить заявку
+                </Button>
+                <Button
+                  onClick={submitForm}
+                  className={cx('credentials__button')}
+                >
+                  Отправить заявку
+                </Button>
+                <Button
+                  onClick={submitForm}
+                  className={cx('credentials__button')}
+                >
+                  Отправить заявку
                 </Button>
               </Stack>
             </Form>
