@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Place, Booking
 from .serializers import PlaceSerializer, BookingSerializer, BookingAdminSerializer
+from django.http import Http404
 
 class PlaceViewSet(viewsets.ModelViewSet):
     queryset = Place.objects.all()
@@ -27,3 +29,13 @@ class CreateBookingViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+    
+class BookingsForPlace(APIView):
+    def get(self, request, place_id, event_date):
+        try:
+            place = Place.objects.get(pk=place_id)
+            bookings = Booking.objects.filter(place=place, event_start__date=event_date)
+            serializer = BookingSerializer(bookings, many=True)
+            return Response(serializer.data)
+        except Place.DoesNotExist:
+            raise Http404("Place does not exist")
