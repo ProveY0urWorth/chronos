@@ -12,40 +12,43 @@ import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import styles from './BookingPage.module.scss'
 import classNames from 'classnames/bind'
-import { IBooking } from '../../redux/features/BookingSlice'
+import { IBooking, createBooking } from '../../redux/features/BookingSlice'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import {
-  fetchPlaces,
+  getPlaces,
   selectError,
   selectIsLoading,
   selectPlaces,
 } from '../../redux/features/PlacesSlice'
+import { useLocation } from 'react-router-dom'
 const cx = classNames.bind(styles)
 
 interface BookingPageProps {
   className?: string
 }
 
-const Initial_Values: IBooking = {
-  fullname: '',
-  phoneNumber: '',
-  eventStart: '',
-  eventFinish: '',
-  technicalEquipment: '',
-  organizerInfo: '',
-  role: 0,
-  place: 0,
-}
-
 export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
+  const location = useLocation()
+  const { placeId, date } = location.state
   const isLoading = useAppSelector(selectIsLoading)
   const isError = useAppSelector(selectError)
   const places = useAppSelector(selectPlaces)
   const dispatch = useAppDispatch()
 
+  const Initial_Values: IBooking = {
+    fullname: '',
+    phoneNumber: '',
+    eventStart: '',
+    eventFinish: '',
+    technicalEquipment: '',
+    organizerInfo: '',
+    role: 0,
+    place: placeId,
+  }
+
   useEffect(() => {
-    dispatch(fetchPlaces())
+    dispatch(getPlaces())
   }, [dispatch])
 
   if (!isLoading && !isError) {
@@ -59,6 +62,18 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
       onSubmit={(values) => {
         console.log(values)
         console.log(places)
+        dispatch(
+          createBooking({
+            fullname: 'Жирный пельмень',
+            phoneNumber: '+79787210820',
+            eventStart: '2023-10-12T08:30:00Z',
+            eventFinish: '2023-10-13T12:00:00Z',
+            technicalEquipment: 'Ничего не надо',
+            organizerInfo: 'Ноль',
+            role: 1,
+            place: 1,
+          })
+        )
       }}
     >
       {({ values, submitForm }) => {
@@ -123,21 +138,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                   <MenuItem value={2}>Преподаватель</MenuItem>
                   <MenuItem value={3}>Внешний организатор</MenuItem>
                 </Select>
-                <Select
-                  name='place'
-                  label='Локация'
-                  value={values.place}
-                >
-                  <MenuItem
-                    value={0}
-                    disabled
-                  >
-                    Не выбран
-                  </MenuItem>
-                  <MenuItem value={1}>Хрустальный зал</MenuItem>
-                  <MenuItem value={2}>Зал с хрустальной совой</MenuItem>
-                  <MenuItem value={3}>Хогвартс</MenuItem>
-                </Select>
+
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker onChange={(e: any) => console.log(e.$H)} />
                 </LocalizationProvider>

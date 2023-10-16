@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../constants/axios'
 import { AxiosError } from 'axios'
-import { AppDispatch, RootState } from '../store'
+import { RootState } from '../store'
 
 export interface IPlace {
   unique_id: number
@@ -10,11 +10,7 @@ export interface IPlace {
   building: string
 }
 
-interface IPlaceResponse {
-  places: IPlace[]
-}
-
-export const fetchPlaces = createAsyncThunk<
+export const getPlaces = createAsyncThunk<
   IPlace[],
   undefined,
   {
@@ -22,7 +18,7 @@ export const fetchPlaces = createAsyncThunk<
   }
 >('getPlaces', async function (_, { rejectWithValue }) {
   try {
-    const { data } = await axiosInstance.get('/places/list/?format=json')
+    const { data } = await axiosInstance.get('places/list/?format=json')
     return data
   } catch (error: any) {
     return rejectWithValue(error)
@@ -47,13 +43,13 @@ export const PlacesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) =>
     builder
-      .addCase(fetchPlaces.pending, (state) => {
+      .addCase(getPlaces.pending, (state) => {
         return {
           ...state,
           loading: true,
         }
       })
-      .addCase(fetchPlaces.fulfilled, (state, action) => {
+      .addCase(getPlaces.fulfilled, (state, action) => {
         const result = action.payload
         return {
           ...state,
@@ -62,8 +58,7 @@ export const PlacesSlice = createSlice({
           error: null,
         }
       })
-
-      .addCase(fetchPlaces.rejected, (state, action) => {
+      .addCase(getPlaces.rejected, (state, action) => {
         return {
           ...state,
           loading: false,

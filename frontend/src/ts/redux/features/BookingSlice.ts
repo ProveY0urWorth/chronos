@@ -35,6 +35,28 @@ const initialState: IBookingState = {
   },
 }
 
+export const createBooking = createAsyncThunk<
+  any,
+  IBooking,
+  { rejectValue: AxiosError }
+>('createBooking', async function (iBooking, { rejectWithValue }) {
+  try {
+    const { data } = await axiosInstance.post('bookings/create', {
+      full_name: iBooking.fullname,
+      phone_number: iBooking.phoneNumber,
+      event_start: iBooking.eventStart,
+      event_end: iBooking.eventFinish,
+      technical_equipment: iBooking.technicalEquipment,
+      organizer_info: iBooking.organizerInfo,
+      role: iBooking.role,
+      place: iBooking.place,
+    })
+    return data
+  } catch (error: any) {
+    return rejectWithValue(error)
+  }
+})
+
 export const BookingSlice = createSlice({
   name: 'booking',
   initialState,
