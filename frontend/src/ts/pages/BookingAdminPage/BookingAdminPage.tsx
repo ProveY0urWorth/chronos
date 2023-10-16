@@ -24,11 +24,13 @@ import {
 import { useLocation } from 'react-router-dom'
 const cx = classNames.bind(styles)
 
-interface BookingPageProps {
+interface AdminBookingPageProps {
   className?: string
 }
 
-export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
+export const AdminBookingPage: React.FC<AdminBookingPageProps> = ({
+  className = '',
+}) => {
   const location = useLocation()
   const { placeId, date } = location.state
   const isLoading = useAppSelector(selectIsLoading)
@@ -156,11 +158,11 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
               </Stack>
             </Form>
             {/* {isError && (
-              <ErrorSnackbars
-                openOrNot={true}
-                message={isError.message}
-              />
-            )} */}
+                <ErrorSnackbars
+                  openOrNot={true}
+                  message={isError.message}
+                />
+              )} */}
           </div>
         )
       }}
