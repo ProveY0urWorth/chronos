@@ -8,12 +8,19 @@ import {
   Typography,
 } from '@mui/material'
 import { Field, Form, Formik } from 'formik'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
 import styles from './BookingPage.module.scss'
 import classNames from 'classnames/bind'
 import { IBooking } from '../../redux/features/BookingSlice'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import {
+  fetchPlaces,
+  selectError,
+  selectIsLoading,
+  selectPlaces,
+} from '../../redux/features/PlacesSlice'
 const cx = classNames.bind(styles)
 
 interface BookingPageProps {
@@ -32,12 +39,26 @@ const Initial_Values: IBooking = {
 }
 
 export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
+  const isLoading = useAppSelector(selectIsLoading)
+  const isError = useAppSelector(selectError)
+  const places = useAppSelector(selectPlaces)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchPlaces())
+  }, [dispatch])
+
+  if (!isLoading && !isError) {
+    console.log(places)
+  }
+
   return (
     <Formik
       initialValues={Initial_Values}
       //validationSchema={BookingSchema}
       onSubmit={(values) => {
         console.log(values)
+        console.log(places)
       }}
     >
       {({ values, submitForm }) => {

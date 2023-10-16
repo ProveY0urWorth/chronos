@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { routes } from './config'
 import { BookingPage } from '../pages/BookingPage/BookingPage'
+import { HomePage } from '../pages/HomePage/HomePage'
 
 function Routing() {
   return (
@@ -11,10 +12,14 @@ function Routing() {
         element={<BookingPage />}
       />
       <Route
+        path={routes.home}
+        element={<HomePage />}
+      />
+      <Route
         path={routes.any}
         element={
           <Navigate
-            to={routes.home}
+            to={routes.booking}
             replace
           />
         }

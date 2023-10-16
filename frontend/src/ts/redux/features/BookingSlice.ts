@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../constants/axios'
 import { RootState } from '../store'
+import { AxiosError } from 'axios'
 
 export interface IBooking {
   fullname: string
@@ -35,10 +36,14 @@ const initialState: IBookingState = {
 }
 
 export const BookingSlice = createSlice({
-  name: 'adminCredentials',
+  name: 'booking',
   initialState,
   reducers: {},
   extraReducers: (builder) => builder,
 })
+
+export const selectIsLoading = (state: RootState) => state.booking.loading
+export const selectBooking = (state: RootState) => state.booking.booking
+export const selectError = (state: RootState) => state.booking.error
 
 export default BookingSlice.reducer
