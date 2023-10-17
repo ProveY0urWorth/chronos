@@ -33,8 +33,8 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
   const Initial_Values: IBooking = {
     fullname: '',
     phoneNumber: '',
-    eventStart: '08:30:00',
-    eventFinish: '10:00:00',
+    eventStart: '',
+    eventFinish: '',
     technicalEquipment: '',
     organizerInfo: '',
     role: 0,

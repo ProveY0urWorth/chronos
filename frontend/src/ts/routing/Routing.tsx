@@ -2,6 +2,8 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { routes } from './config'
 import { BookingPage } from '../pages/BookingPage/BookingPage'
 import { HomePage } from '../pages/HomePage/HomePage'
+import { AdminHomePage } from '../pages/AdminHomePage/AdminHomePage'
+import { BookingAdminPage } from '../pages/BookingAdminPage/BookingAdminPage'
 
 function Routing() {
   return (
@@ -16,10 +18,18 @@ function Routing() {
         element={<HomePage />}
       />
       <Route
-        path='*'
+        path={routes.adminPanel}
+        element={<AdminHomePage />}
+      />
+      <Route
+        path={routes.adminBooking}
+        element={<BookingAdminPage />}
+      />
+      <Route
+        path={routes.any}
         element={
           <Navigate
-            to='/home'
+            to={routes.home}
             replace
           />
         }

@@ -4,6 +4,6 @@ export const routes = {
   booking: '/booking',
   login: '/login',
   adminPanel: '/admin-panel',
-  bookingPanel: '/booking-panel',
+  adminBooking: '/admin-booking',
   any: '*',
 }
