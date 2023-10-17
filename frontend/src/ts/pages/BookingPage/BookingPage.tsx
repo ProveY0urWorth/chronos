@@ -80,7 +80,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                 <Typography variant='body2'>ФИО заявителя</Typography>
                 <Field
                   as={TextField}
-                  name='fullname'
+                  name='full_name'
                   label='Введите ФИО заявителя'
                   value={values.full_name}
                   className={cx('credentials__textfield')}
@@ -88,7 +88,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                 <Typography variant='body2'>Номер телефона</Typography>
                 <Field
                   as={TextField}
-                  name='phoneNumber'
+                  name='phone_number'
                   label='Введите номер телефона'
                   value={values.phone_number}
                   className={cx('credentials__textfield')}
@@ -99,7 +99,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                 <Field
                   as={TextareaAutosize}
                   minRows={3}
-                  name='technicalEquipment'
+                  name='technical_equipment'
                   placeholder='Введите перечень технического оборудования'
                   value={values.technical_equipment}
                   className={cx('credentials__textfield')}
@@ -110,7 +110,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                 <Field
                   as={TextareaAutosize}
                   minRows={3}
-                  name='organizerInfo'
+                  name='organizer_info'
                   placeholder='Введите информацию о мероприятии'
                   value={values.organizer_info}
                   className={cx('credentials__textfield')}
@@ -120,7 +120,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
                     onChange={(e: any) =>
-                      (values.event_start = e.$H + ':' + e.$m + ':00')
+                      (values.event_start = e.$H + ':' + e.$m)
                     }
                   />
                 </LocalizationProvider>
@@ -128,7 +128,7 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                   <TimePicker
                     onChange={(e: any) =>
                       //console.log(e.$H + ':' + e.$m)
-                      (values.event_end = e.$H + ':' + e.$m + ':00')
+                      (values.event_end = e.$H + ':' + e.$m)
                     }
                   />
                 </LocalizationProvider>

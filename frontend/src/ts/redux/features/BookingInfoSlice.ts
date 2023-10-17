@@ -8,10 +8,6 @@ export interface IBookingInfo extends IBooking {
   unique_id: number
 }
 
-interface IBookingInfoResponse {
-  list: IBooking[]
-}
-
 interface FecthBookingParams {
   placeId: number
   date: string

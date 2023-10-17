@@ -42,7 +42,14 @@ export const createBooking = createAsyncThunk<
 >('createBooking', async function (iBooking, { rejectWithValue }) {
   try {
     const { data } = await axiosInstance.post('bookings/create', {
-      iBooking,
+      full_name: iBooking.full_name,
+      phone_number: iBooking.phone_number,
+      event_start: iBooking.event_start,
+      event_end: iBooking.event_end,
+      organizer_info: iBooking.organizer_info,
+      technical_equipment: iBooking.technical_equipment,
+      place: iBooking.place,
+      role: iBooking.role,
     })
     return data
   } catch (error: any) {

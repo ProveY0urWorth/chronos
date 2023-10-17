@@ -48,12 +48,6 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
   useEffect(() => {
     dispatch(getPlaces())
-    dispatch(
-      fetchBookingForPlace({
-        placeId: 1,
-        date: '2023-10-12',
-      })
-    )
   }, [dispatch])
 
   if (isError) {
@@ -69,24 +63,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
   })
 
   const shouldDisableDate = (date: Dayjs) => {
-    //const dateInterditesRaw = [
-    //  dayjs('2023-10-1'),
-    //  dayjs('2023-10-2'),
-    //  dayjs('2023-10-8'),
-    //  dayjs('2023-10-9'),
-    //  dayjs('2023-10-14'),
-    //  dayjs('2023-10-17'),
-    //  dayjs('2023-10-18'),
-    //  dayjs('2023-10-25'),
-    //]
-    //
-    //// Create an array of getTime values from dateInterditesRaw
-    //const dateInterdites = dateInterditesRaw.map((forbiddenDate) =>
-    //  forbiddenDate.unix()
-    //)
-
-    // Check if the date.unix() value is in the dateInterdites array
-    return date.day() === 0 //|| dateInterdites.includes(date.unix())
+    return date.day() === 0
   }
 
   return (
@@ -99,12 +76,12 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
       {({ values, submitForm }) => {
         return (
           <Form>
-            <Stack direction={'row'}>
+            <Stack>
+              <PlaceDataField
+                places={placesList}
+                placeId={values.placeId}
+              />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <PlaceDataField
-                  places={placesList}
-                  placeId={values.placeId}
-                />
                 <DateCalendar
                   disablePast
                   shouldDisableDate={shouldDisableDate}
@@ -115,7 +92,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                 />
               </LocalizationProvider>
               <Link
-                to={`${routes.booking}`}
+                to={routes.booking}
                 state={{
                   placeId: values.placeId,
                   date: values.date,

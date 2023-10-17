@@ -24,7 +24,7 @@ import {
 } from '../../redux/features/BookingInfoSlice'
 import { Dayjs } from 'dayjs'
 import { Form, Formik } from 'formik'
-import BookingsList from '../../components/BookingsList'
+import BookingsList from '../../components/BookingList/BookingsList'
 
 const cx = classNames.bind(styles)
 
@@ -83,28 +83,28 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
       {({ values, submitForm }) => {
         return (
           <Form>
-            <Stack>
-              Admin
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <PlaceDataField
-                  places={placesList}
-                  placeId={values.placeId}
-                />
-                <DateCalendar
-                  disablePast
-                  shouldDisableDate={shouldDisableDate}
-                  onChange={(e: any) => {
-                    values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
-                    dispatch(
-                      fetchBookingForPlace({
-                        placeId: values.placeId,
-                        date: values.date,
-                      })
-                    )
-                    console.log(values)
-                  }}
-                />
-              </LocalizationProvider>
+            <Stack direction={'row'}>
+              <Stack>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <PlaceDataField
+                    places={placesList}
+                    placeId={values.placeId}
+                  />
+                  <DateCalendar
+                    disablePast
+                    shouldDisableDate={shouldDisableDate}
+                    onChange={(e: any) => {
+                      values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
+                      dispatch(
+                        fetchBookingForPlace({
+                          placeId: values.placeId,
+                          date: values.date,
+                        })
+                      )
+                    }}
+                  />
+                </LocalizationProvider>
+              </Stack>
               <BookingsList bookings={bookings} />
             </Stack>
           </Form>

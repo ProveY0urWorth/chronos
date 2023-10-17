@@ -58,8 +58,8 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
           createBooking({
             full_name: values.full_name,
             phone_number: values.phone_number,
-            event_start: `${date}T${values.event_start}Z`,
-            event_end: `${date}T${values.event_end}Z`,
+            event_start: `${date}T${values.event_start}`,
+            event_end: `${date}T${values.event_end}`,
             technical_equipment: values.technical_equipment,
             organizer_info: values.organizer_info,
             role: values.role,
@@ -81,7 +81,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                 <Typography variant='body2'>ФИО заявителя</Typography>
                 <Field
                   as={TextField}
-                  name='fullname'
+                  name='full_name'
                   label='Введите ФИО заявителя'
                   value={values.full_name}
                   className={cx('credentials__textfield')}
@@ -89,7 +89,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                 <Typography variant='body2'>Номер телефона</Typography>
                 <Field
                   as={TextField}
-                  name='phoneNumber'
+                  name='phone_number'
                   label='Введите номер телефона'
                   value={values.phone_number}
                   className={cx('credentials__textfield')}
@@ -100,7 +100,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                 <Field
                   as={TextareaAutosize}
                   minRows={3}
-                  name='technicalEquipment'
+                  name='technical_equipment'
                   placeholder='Введите перечень технического оборудования'
                   value={values.technical_equipment}
                   className={cx('credentials__textfield')}
@@ -111,7 +111,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                 <Field
                   as={TextareaAutosize}
                   minRows={3}
-                  name='organizerInfo'
+                  name='organizer_info'
                   placeholder='Введите информацию о мероприятии'
                   value={values.organizer_info}
                   className={cx('credentials__textfield')}
