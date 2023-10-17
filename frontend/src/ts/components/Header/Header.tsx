@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../../hooks'
 import styles from './Header.module.scss'
 import classNames from 'classnames/bind'
 import { CustomModal } from '../CustomModal/CustomModal'
+import { Link } from 'react-router-dom'
 
 const cx = classNames.bind(styles)
 
@@ -33,6 +34,14 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   return (
     <>
       <div className={cx('header__header', className)}>
+        <a href='https://www.sevsu.ru/'>
+          <img
+            src='../../../../public/headerLogo.png'
+            height={65}
+            alt='Лого СевГУ'
+            color='white'
+          />
+        </a>
         <Typography
           variant='body2'
           className={cx('header__hello-block')}
