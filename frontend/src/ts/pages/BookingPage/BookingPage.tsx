@@ -1,7 +1,6 @@
 import {
   Button,
-  MenuItem,
-  Select,
+  SelectChangeEvent,
   Stack,
   TextField,
   TextareaAutosize,
@@ -15,13 +14,9 @@ import classNames from 'classnames/bind'
 import { IBooking, createBooking } from '../../redux/features/BookingSlice'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import {
-  getPlaces,
-  selectError,
-  selectIsLoading,
-  selectPlaces,
-} from '../../redux/features/PlacesSlice'
+import { selectError, selectIsLoading } from '../../redux/features/PlacesSlice'
 import { useLocation } from 'react-router-dom'
+import { RoleDataField } from '../../components/RolesDataField/RoleDataField'
 const cx = classNames.bind(styles)
 
 interface BookingPageProps {
@@ -33,14 +28,13 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
   const { placeId, date } = location.state
   const isLoading = useAppSelector(selectIsLoading)
   const isError = useAppSelector(selectError)
-  const places = useAppSelector(selectPlaces)
   const dispatch = useAppDispatch()
 
   const Initial_Values: IBooking = {
     fullname: '',
     phoneNumber: '',
-    eventStart: '',
-    eventFinish: '',
+    eventStart: '08:30:00',
+    eventFinish: '10:00:00',
     technicalEquipment: '',
     organizerInfo: '',
     role: 0,
@@ -48,12 +42,8 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
   }
 
   useEffect(() => {
-    dispatch(getPlaces())
+    //dispatch()
   }, [dispatch])
-
-  if (!isLoading && !isError) {
-    console.log(places)
-  }
 
   return (
     <Formik
@@ -61,19 +51,19 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
       //validationSchema={BookingSchema}
       onSubmit={(values) => {
         console.log(values)
-        console.log(places)
-        //dispatch(
-        //  createBooking({
-        //    fullname: values.fullname,
-        //    phoneNumber: values.phoneNumber,
-        //    eventStart: '2023-10-12T08:30:00Z',
-        //    eventFinish: '2023-10-13T12:00:00Z',
-        //    technicalEquipment: values.technicalEquipment,
-        //    organizerInfo: values.organizerInfo,
-        //    role: 1,
-        //    place: values.place,
-        //  })
-        //)
+        console.log(date)
+        dispatch(
+          createBooking({
+            fullname: values.fullname,
+            phoneNumber: values.phoneNumber,
+            eventStart: `${date}T${values.eventStart}Z`,
+            eventFinish: `${date}T${values.eventFinish}Z`,
+            technicalEquipment: values.technicalEquipment,
+            organizerInfo: values.organizerInfo,
+            role: values.role,
+            place: values.place,
+          })
+        )
       }}
     >
       {({ values, submitForm }) => {
@@ -123,29 +113,22 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                   value={values.organizerInfo}
                   className={cx('credentials__textfield')}
                 />
-                <Select
-                  name='role'
-                  label='Роль'
-                  value={values.role}
-                >
-                  <MenuItem
-                    value={0}
-                    disabled
-                  >
-                    Не выбрана
-                  </MenuItem>
-                  <MenuItem value={1}>Студент</MenuItem>
-                  <MenuItem value={2}>Преподаватель</MenuItem>
-                  <MenuItem value={3}>Внешний организатор</MenuItem>
-                </Select>
+                <RoleDataField role={`${values.role}`} />
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
-                    onChange={(e: any) => console.log(e.$H + ':' + e.$m)}
+                    onChange={(e: any) =>
+                      (values.eventStart = e.$H + ':' + e.$m + ':00')
+                    }
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker />
+                  <TimePicker
+                    onChange={(e: any) =>
+                      //console.log(e.$H + ':' + e.$m)
+                      (values.eventFinish = e.$H + ':' + e.$m + ':00')
+                    }
+                  />
                 </LocalizationProvider>
                 <Button
                   onClick={submitForm}

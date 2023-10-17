@@ -16,10 +16,10 @@ function Routing() {
         element={<HomePage />}
       />
       <Route
-        path={routes.any}
+        path='*'
         element={
           <Navigate
-            to={routes.booking}
+            to='/home'
             replace
           />
         }

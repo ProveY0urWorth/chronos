@@ -15,7 +15,7 @@ import {
   selectPlaces,
 } from '../../redux/features/PlacesSlice'
 import { Button, CircularProgress, Stack } from '@mui/material'
-import { PlaceDataField } from '../../components/PlacesDataField'
+import { PlaceDataField } from '../../components/PlacesDataField/PlacesDataField'
 import { routes } from '../../routing/config'
 import { Link } from 'react-router-dom'
 import { fetchBookingForPlace } from '../../redux/features/BookingInfoSlice'
