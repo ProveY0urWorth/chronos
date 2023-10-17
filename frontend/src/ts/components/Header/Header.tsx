@@ -33,7 +33,10 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   return (
     <>
       <div className={cx('header__header', className)}>
-        <Typography variant='body2'>
+        <Typography
+          variant='body2'
+          className={cx('header__hello-block')}
+        >
           {isAdmin === 'true' ? 'Aдмин-панель' : 'SevSU Booking'}
         </Typography>
         <div className={cx('header__hello-block')}>
@@ -43,9 +46,8 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
           <Button
             size='large'
             variant='outlined'
-            color='success'
+            color='inherit'
             onClick={handleOpenModal}
-            hidden={isAdmin === 'true'}
           >
             <Typography variant='body1'>Выйти</Typography>
           </Button>

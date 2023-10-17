@@ -9,7 +9,7 @@ import {
   Button,
 } from '@mui/material'
 import { IBookingInfo } from '../../redux/features/BookingInfoSlice'
-import styles from './UserRightList.module.scss'
+import styles from './BookingsList.module.scss'
 import { Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import classNames from 'classnames/bind'

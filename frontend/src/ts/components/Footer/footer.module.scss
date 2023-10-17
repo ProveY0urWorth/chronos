@@ -1,5 +1,5 @@
-.header {
-  &__header {
+.footer {
+  &__footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,7 +11,10 @@
     width: 100%;
     background-color: #0f52ba;
     flex-wrap: wrap;
-    position: relative;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
     padding-left: 70px;
   }
   &__hello-block {
@@ -23,10 +26,4 @@
     flex-wrap: wrap;
     gap: 20px;
   }
-}
-
-.homepage-menu {
-  position: absolute;
-  top: 20;
-  left: 20;
 }

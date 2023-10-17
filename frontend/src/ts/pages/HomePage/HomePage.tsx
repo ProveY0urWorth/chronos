@@ -76,30 +76,36 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
       {({ values, submitForm }) => {
         return (
           <Form>
-            <Stack>
-              <PlaceDataField
-                places={placesList}
-                placeId={values.placeId}
-              />
+            <Stack
+              paddingLeft={25}
+              marginTop={5}
+            >
               <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <PlaceDataField
+                  places={placesList}
+                  placeId={values.placeId}
+                />
                 <DateCalendar
+                  className={cx('credentials__calendar')}
                   disablePast
                   shouldDisableDate={shouldDisableDate}
                   onChange={(e: any) => {
                     values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
-                    console.log(values.date)
+                    dispatch(
+                      fetchBookingForPlace({
+                        placeId: values.placeId,
+                        date: values.date,
+                      })
+                    )
                   }}
                 />
               </LocalizationProvider>
-              <Link
-                to={routes.booking}
-                state={{
-                  placeId: values.placeId,
-                  date: values.date,
-                }}
+              <Button
+                className={cx('credentials__button')}
+                onClick={submitForm}
               >
-                <Button onClick={submitForm}>ЗАЯВОЧКА</Button>
-              </Link>
+                Оставить заявку
+              </Button>
             </Stack>
           </Form>
         )

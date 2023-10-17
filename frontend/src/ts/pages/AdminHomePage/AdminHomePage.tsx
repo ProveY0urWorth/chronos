@@ -83,7 +83,11 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
       {({ values, submitForm }) => {
         return (
           <Form>
-            <Stack direction={'row'}>
+            <Stack
+              marginLeft={25}
+              marginTop={5}
+              direction={'row'}
+            >
               <Stack>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <PlaceDataField

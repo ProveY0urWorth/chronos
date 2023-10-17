@@ -25,7 +25,7 @@ export const PlaceDataField: React.FC<IPlaceDataFieldProps> = ({
   const { setFieldValue } = useFormikContext()
 
   return (
-    <Stack>
+    <Stack spacing={2}>
       <Typography variant='body2'>Локация</Typography>
       <Autocomplete
         options={places}

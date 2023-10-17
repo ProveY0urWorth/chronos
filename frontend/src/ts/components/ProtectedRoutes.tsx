@@ -1,24 +1,15 @@
-import React from 'react'
-import { Navigate, Outlet } from 'react-router'
-import { useAppSelector } from '../../hooks'
+import { Outlet } from 'react-router'
 //import { selectAuthToken } from '../../redux/features/authSlice'
-import { routes } from '../routing/config'
-//mport Header from './Header/Header'
+import Header from './Header/Header'
+import Footer from './Footer/Footer'
 
 function ProtectedRoutes() {
-  //const token = useAppSelector(selectAuthToken)
-  const lsToken = localStorage.getItem('authToken')
-
-  return /*token || */ lsToken ? (
+  return (
     <>
-      {/* <Header /> */}
+      <Header />
       <Outlet />
+      <Footer />
     </>
-  ) : (
-    <Navigate
-      to={routes.login}
-      replace
-    />
   )
 }
 
