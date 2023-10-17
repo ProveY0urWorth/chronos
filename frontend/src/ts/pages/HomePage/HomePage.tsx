@@ -1,8 +1,4 @@
-import {
-  DateCalendar,
-  DatePicker,
-  LocalizationProvider,
-} from '@mui/x-date-pickers'
+import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React, { useEffect } from 'react'
 import styles from './HomePage.module.scss'
@@ -18,9 +14,13 @@ import { Button, CircularProgress, Stack } from '@mui/material'
 import { PlaceDataField } from '../../components/PlacesDataField/PlacesDataField'
 import { routes } from '../../routing/config'
 import { Link } from 'react-router-dom'
-import { fetchBookingForPlace } from '../../redux/features/BookingInfoSlice'
+import {
+  fetchBookingForPlace,
+  selectBookingsInfo,
+} from '../../redux/features/BookingInfoSlice'
 import dayjs, { Dayjs } from 'dayjs'
 import { Form, Formik } from 'formik'
+import BookingsList from '../../components/BookingList/BookingsList'
 
 const cx = classNames.bind(styles)
 
@@ -37,6 +37,8 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
   const isLoading = useAppSelector(selectIsLoading)
   const isError = useAppSelector(selectError)
   const places = useAppSelector(selectPlaces)
+
+  const bookings = useAppSelector(selectBookingsInfo)
   const dispatch = useAppDispatch()
 
   const placesList: { label: string; value: number }[] = []
@@ -80,32 +82,46 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               paddingLeft={25}
               marginTop={5}
             >
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <PlaceDataField
-                  places={placesList}
-                  placeId={values.placeId}
-                />
-                <DateCalendar
-                  className={cx('credentials__calendar')}
-                  disablePast
-                  shouldDisableDate={shouldDisableDate}
-                  onChange={(e: any) => {
-                    values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
-                    dispatch(
-                      fetchBookingForPlace({
-                        placeId: values.placeId,
-                        date: values.date,
-                      })
-                    )
-                  }}
-                />
-              </LocalizationProvider>
-              <Button
-                className={cx('credentials__button')}
-                onClick={submitForm}
-              >
-                Оставить заявку
-              </Button>
+              <Stack direction={'row'}>
+                <Stack direction={'column'}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <PlaceDataField
+                      places={placesList}
+                      placeId={values.placeId}
+                    />
+                    <DateCalendar
+                      className={cx('credentials__calendar')}
+                      disablePast
+                      shouldDisableDate={shouldDisableDate}
+                      onChange={(e: any) => {
+                        values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
+                        dispatch(
+                          fetchBookingForPlace({
+                            placeId: values.placeId,
+                            date: values.date,
+                          })
+                        )
+                      }}
+                    />
+                  </LocalizationProvider>
+
+                  <Link
+                    to={`${routes.booking}`}
+                    state={{
+                      placeId: values.placeId,
+                      date: values.date,
+                    }}
+                  >
+                    <Button
+                      className={cx('credentials__button')}
+                      onClick={submitForm}
+                    >
+                      Оставить заявку
+                    </Button>
+                  </Link>
+                </Stack>
+                <BookingsList bookings={bookings} />
+              </Stack>
             </Stack>
           </Form>
         )

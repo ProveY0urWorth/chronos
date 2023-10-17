@@ -24,8 +24,7 @@ interface BookingPageProps {
 }
 
 export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
-  const location = useLocation()
-  const { placeId, date } = location.state
+  const { placeId, date } = useLocation().state
   const isLoading = useAppSelector(selectIsLoading)
   const isError = useAppSelector(selectError)
   const dispatch = useAppDispatch()
@@ -74,64 +73,92 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
             <Form>
               <Stack
                 direction='column'
-                spacing={1}
+                spacing={5}
                 alignItems={'center'}
               >
-                <Typography variant='body2'>ФИО заявителя</Typography>
-                <Field
-                  as={TextField}
-                  name='full_name'
-                  label='Введите ФИО заявителя'
-                  value={values.full_name}
-                  className={cx('credentials__textfield')}
-                />
-                <Typography variant='body2'>Номер телефона</Typography>
-                <Field
-                  as={TextField}
-                  name='phone_number'
-                  label='Введите номер телефона'
-                  value={values.phone_number}
-                  className={cx('credentials__textfield')}
-                />
-                <Typography variant='body2'>
-                  Техническое оборудование
-                </Typography>
-                <Field
-                  as={TextareaAutosize}
-                  minRows={3}
-                  name='technical_equipment'
-                  placeholder='Введите перечень технического оборудования'
-                  value={values.technical_equipment}
-                  className={cx('credentials__textfield')}
-                />
-                <Typography variant='body2'>
-                  Информация о мероприятии
-                </Typography>
-                <Field
-                  as={TextareaAutosize}
-                  minRows={3}
-                  name='organizer_info'
-                  placeholder='Введите информацию о мероприятии'
-                  value={values.organizer_info}
-                  className={cx('credentials__textfield')}
-                />
-                <RoleDataField role={`${values.role}`} />
+                <Stack
+                  direction='row'
+                  margin-left={20}
+                  spacing={10}
+                >
+                  <Stack spacing={3}>
+                    <Stack spacing={1}>
+                      <Typography variant='body2'>ФИО заявителя</Typography>
+                      <Field
+                        as={TextField}
+                        name='full_name'
+                        label='Введите ФИО заявителя'
+                        value={values.full_name}
+                        className={cx('credentials__textfield')}
+                      />
+                    </Stack>
+                    <Stack padding={1}>
+                      <Typography variant='body2'>Номер телефона</Typography>
+                      <Field
+                        as={TextField}
+                        name='phone_number'
+                        label='Введите номер телефона'
+                        value={values.phone_number}
+                        className={cx('credentials__textfield')}
+                      />
+                    </Stack>
+                    <RoleDataField role={`${values.role}`} />
+                    <Stack spacing={3}>
+                      <Stack spacing={1}>
+                        <Typography>Время начала</Typography>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <TimePicker
+                            onChange={(e: any) =>
+                              (values.event_start = e.$H + ':' + e.$m)
+                            }
+                          />
+                        </LocalizationProvider>
+                      </Stack>
 
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    onChange={(e: any) =>
-                      (values.event_start = e.$H + ':' + e.$m)
-                    }
-                  />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
-                    onChange={(e: any) =>
-                      //console.log(e.$H + ':' + e.$m)
-                      (values.event_end = e.$H + ':' + e.$m)
-                    }
-                  />
-                </LocalizationProvider>
+                      <Stack spacing={1}>
+                        <Typography>Время конца</Typography>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <TimePicker
+                            onChange={(e: any) =>
+                              //console.log(e.$H + ':' + e.$m)
+                              (values.event_end = e.$H + ':' + e.$m)
+                            }
+                          />
+                        </LocalizationProvider>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+
+                  <Stack spacing={5}>
+                    <Stack spacing={1}>
+                      <Typography variant='body2'>
+                        Техническое оборудование
+                      </Typography>
+                      <Field
+                        as={TextareaAutosize}
+                        minRows={3}
+                        name='technical_equipment'
+                        placeholder='Введите перечень технического оборудования'
+                        value={values.technical_equipment}
+                        className={cx('credentials__textfield')}
+                      />
+                    </Stack>
+                    <Stack spacing={1}>
+                      <Typography variant='body2'>
+                        Информация о мероприятии
+                      </Typography>
+                      <Field
+                        as={TextareaAutosize}
+                        minRows={3}
+                        name='organizer_info'
+                        placeholder='Введите информацию о мероприятии'
+                        value={values.organizer_info}
+                        className={cx('credentials__textfield')}
+                      />
+                    </Stack>
+                  </Stack>
+                </Stack>
+
                 <Button
                   onClick={submitForm}
                   className={cx('credentials__button')}

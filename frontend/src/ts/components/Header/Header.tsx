@@ -42,12 +42,6 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
             color='white'
           />
         </a>
-        <Typography
-          variant='body2'
-          className={cx('header__hello-block')}
-        >
-          {isAdmin === 'true' ? 'Aдмин-панель' : 'SevSU Booking'}
-        </Typography>
         <div className={cx('header__hello-block')}>
           <Typography variant='body2'>
             Привет, {isAdmin === 'true' ? 'Администратор' : 'Пользователь'}

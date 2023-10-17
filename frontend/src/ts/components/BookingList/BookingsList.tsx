@@ -2,7 +2,6 @@ import React from 'react'
 import {
   List,
   ListItem,
-  ListItemText,
   Divider,
   Container,
   Stack,
@@ -61,7 +60,7 @@ const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
                   <Typography>Информация об организаторе:</Typography>
                   <p>{booking.organizer_info}</p>
                 </Stack>
-                <Button>Открыть заявку</Button>
+                <Button sx={{ display: { xl: 'none' } }}>Открыть заявку</Button>
               </Stack>
             </ListItem>
             <Divider />
