@@ -110,6 +110,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                   shouldDisableDate={shouldDisableDate}
                   onChange={(e: any) => {
                     values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
+                    console.log(values.date)
                   }}
                 />
               </LocalizationProvider>

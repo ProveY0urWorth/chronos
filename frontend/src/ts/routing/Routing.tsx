@@ -4,6 +4,7 @@ import { BookingPage } from '../pages/BookingPage/BookingPage'
 import { HomePage } from '../pages/HomePage/HomePage'
 import { AdminHomePage } from '../pages/AdminHomePage/AdminHomePage'
 import { BookingAdminPage } from '../pages/BookingAdminPage/BookingAdminPage'
+import { LoginPage } from '../pages/LoginPage/LoginPage'
 
 function Routing() {
   return (
@@ -24,6 +25,10 @@ function Routing() {
       <Route
         path={routes.adminBooking}
         element={<BookingAdminPage />}
+      />
+      <Route
+        path={routes.login}
+        element={<LoginPage />}
       />
       <Route
         path={routes.any}

@@ -4,6 +4,10 @@ import { AxiosError } from 'axios'
 import { RootState } from '../store'
 import { IBooking } from './BookingSlice'
 
+export interface IBookingInfo extends IBooking {
+  unique_id: number
+}
+
 interface IBookingInfoResponse {
   list: IBooking[]
 }
@@ -14,7 +18,7 @@ interface FecthBookingParams {
 }
 
 export const fetchBookingForPlace = createAsyncThunk<
-  IBooking[],
+  IBookingInfo[],
   FecthBookingParams,
   { rejectValue: AxiosError }
 >(
@@ -35,7 +39,7 @@ export const fetchBookingForPlace = createAsyncThunk<
 interface IBookingsInfoState {
   loading: boolean
   error: any | null
-  bookings: IBooking[]
+  bookings: IBookingInfo[]
 }
 
 const initialState: IBookingsInfoState = {

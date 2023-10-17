@@ -2,6 +2,9 @@ import { Typography, Autocomplete, TextField, Box, Stack } from '@mui/material'
 import React from 'react'
 import classNames from 'classnames/bind'
 import { useFormikContext, ErrorMessage } from 'formik'
+import styles from './PlacesDataField.module.scss'
+
+const cx = classNames.bind(styles)
 
 interface IPlaceDataFieldProps {
   places: { label: string; value: number }[]
@@ -27,6 +30,7 @@ export const PlaceDataField: React.FC<IPlaceDataFieldProps> = ({
       <Autocomplete
         options={places}
         inputValue={inputPlaceName}
+        className={cx('credentials__textfield')}
         value={getPlaceValueById(places, placeId)}
         onChange={(_, value) => {
           if (value) {

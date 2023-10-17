@@ -4,12 +4,12 @@ import { RootState } from '../store'
 import { AxiosError } from 'axios'
 
 export interface IBooking {
-  fullname: string
-  phoneNumber: string
-  eventStart: string
-  eventFinish: string
-  technicalEquipment: string
-  organizerInfo: string
+  full_name: string
+  phone_number: string
+  event_start: string
+  event_end: string
+  technical_equipment: string
+  organizer_info: string
   role: number
   place: number
 }
@@ -24,12 +24,12 @@ const initialState: IBookingState = {
   loading: false,
   error: null,
   booking: {
-    fullname: '',
-    phoneNumber: '',
-    eventStart: '',
-    eventFinish: '',
-    technicalEquipment: '',
-    organizerInfo: '',
+    full_name: '',
+    phone_number: '',
+    event_start: '',
+    event_end: '',
+    technical_equipment: '',
+    organizer_info: '',
     role: 0,
     place: 0,
   },
@@ -42,14 +42,7 @@ export const createBooking = createAsyncThunk<
 >('createBooking', async function (iBooking, { rejectWithValue }) {
   try {
     const { data } = await axiosInstance.post('bookings/create', {
-      full_name: iBooking.fullname,
-      phone_number: iBooking.phoneNumber,
-      event_start: iBooking.eventStart,
-      event_end: iBooking.eventFinish,
-      technical_equipment: iBooking.technicalEquipment,
-      organizer_info: iBooking.organizerInfo,
-      role: iBooking.role,
-      place: iBooking.place,
+      iBooking,
     })
     return data
   } catch (error: any) {

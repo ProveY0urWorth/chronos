@@ -22,8 +22,9 @@ import {
   fetchBookingForPlace,
   selectBookingsInfo,
 } from '../../redux/features/BookingInfoSlice'
-import dayjs, { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs'
 import { Form, Formik } from 'formik'
+import BookingsList from '../../components/BookingsList'
 
 const cx = classNames.bind(styles)
 
@@ -54,12 +55,6 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
 
   useEffect(() => {
     dispatch(getPlaces())
-    dispatch(
-      fetchBookingForPlace({
-        placeId: 1,
-        date: '2023-10-12',
-      })
-    )
   }, [dispatch])
 
   if (isError) {
@@ -75,24 +70,7 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
   })
 
   const shouldDisableDate = (date: Dayjs) => {
-    //const dateInterditesRaw = [
-    //  dayjs('2023-10-1'),
-    //  dayjs('2023-10-2'),
-    //  dayjs('2023-10-8'),
-    //  dayjs('2023-10-9'),
-    //  dayjs('2023-10-14'),
-    //  dayjs('2023-10-17'),
-    //  dayjs('2023-10-18'),
-    //  dayjs('2023-10-25'),
-    //]
-    //
-    //// Create an array of getTime values from dateInterditesRaw
-    //const dateInterdites = dateInterditesRaw.map((forbiddenDate) =>
-    //  forbiddenDate.unix()
-    //)
-
-    // Check if the date.unix() value is in the dateInterdites array
-    return date.day() === 0 //|| dateInterdites.includes(date.unix())
+    return date.day() === 0
   }
 
   return (
@@ -105,7 +83,7 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
       {({ values, submitForm }) => {
         return (
           <Form>
-            <Stack direction={'row'}>
+            <Stack>
               Admin
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <PlaceDataField
@@ -123,19 +101,11 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
                         date: values.date,
                       })
                     )
-                    console.log(bookings)
+                    console.log(values)
                   }}
                 />
               </LocalizationProvider>
-              <Link
-                to={`${routes.adminBooking}`}
-                state={{
-                  placeId: values.placeId,
-                  date: values.date,
-                }}
-              >
-                <Button onClick={submitForm}>ЗАЯВОЧКА</Button>
-              </Link>
+              <BookingsList bookings={bookings} />
             </Stack>
           </Form>
         )

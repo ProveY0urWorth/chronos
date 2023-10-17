@@ -33,12 +33,12 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
   const dispatch = useAppDispatch()
 
   const Initial_Values: IBooking = {
-    fullname: '',
-    phoneNumber: '',
-    eventStart: '',
-    eventFinish: '',
-    technicalEquipment: '',
-    organizerInfo: '',
+    full_name: '',
+    phone_number: '',
+    event_start: '',
+    event_end: '',
+    technical_equipment: '',
+    organizer_info: '',
     role: 0,
     place: placeId,
   }
@@ -56,12 +56,12 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
         console.log(date)
         dispatch(
           createBooking({
-            fullname: values.fullname,
-            phoneNumber: values.phoneNumber,
-            eventStart: `${date}T${values.eventStart}Z`,
-            eventFinish: `${date}T${values.eventFinish}Z`,
-            technicalEquipment: values.technicalEquipment,
-            organizerInfo: values.organizerInfo,
+            full_name: values.full_name,
+            phone_number: values.phone_number,
+            event_start: `${date}T${values.event_start}Z`,
+            event_end: `${date}T${values.event_end}Z`,
+            technical_equipment: values.technical_equipment,
+            organizer_info: values.organizer_info,
             role: values.role,
             place: values.place,
           })
@@ -83,7 +83,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   as={TextField}
                   name='fullname'
                   label='Введите ФИО заявителя'
-                  value={values.fullname}
+                  value={values.full_name}
                   className={cx('credentials__textfield')}
                 />
                 <Typography variant='body2'>Номер телефона</Typography>
@@ -91,7 +91,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   as={TextField}
                   name='phoneNumber'
                   label='Введите номер телефона'
-                  value={values.phoneNumber}
+                  value={values.phone_number}
                   className={cx('credentials__textfield')}
                 />
                 <Typography variant='body2'>
@@ -102,7 +102,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   minRows={3}
                   name='technicalEquipment'
                   placeholder='Введите перечень технического оборудования'
-                  value={values.technicalEquipment}
+                  value={values.technical_equipment}
                   className={cx('credentials__textfield')}
                 />
                 <Typography variant='body2'>
@@ -113,14 +113,14 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   minRows={3}
                   name='organizerInfo'
                   placeholder='Введите информацию о мероприятии'
-                  value={values.organizerInfo}
+                  value={values.organizer_info}
                   className={cx('credentials__textfield')}
                 />
                 <RoleDataField role={`${values.role}`} />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <TimePicker
                     onChange={(e: any) =>
-                      (values.eventStart = e.$H + ':' + e.$m + ':00')
+                      (values.event_start = e.$H + ':' + e.$m + ':00')
                     }
                   />
                 </LocalizationProvider>
@@ -128,7 +128,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   <TimePicker
                     onChange={(e: any) =>
                       //console.log(e.$H + ':' + e.$m)
-                      (values.eventFinish = e.$H + ':' + e.$m + ':00')
+                      (values.event_end = e.$H + ':' + e.$m + ':00')
                     }
                   />
                 </LocalizationProvider>
