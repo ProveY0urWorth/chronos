@@ -19,18 +19,18 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from chronos.views import PlaceViewSet, BookingAdminViewSet, CreateBookingViewSet, BookingsForPlace
 from django.contrib.auth import views as auth_views
+from cauth.views import UserLoginView, CreateUserView
 
 router = DefaultRouter()
 router.register(r'admin/bookings', BookingAdminViewSet)
 
 urlpatterns = [
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('api/register/', CreateUserView.as_view(), name='user-register'),
+    path('api/login/', UserLoginView.as_view(), name='user-login'),
     path('api/places/list/', PlaceViewSet.as_view({'get': 'list'}), name='place-list'),
     path('api/bookings/create', CreateBookingViewSet.as_view({'post': 'create'}), name='create-booking'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/bookings/<int:place_id>/<str:event_date>/', BookingsForPlace.as_view(), name='bookings-for-place'),
 ]
+
