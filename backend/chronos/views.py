@@ -39,3 +39,13 @@ class BookingsForPlace(APIView):
             return Response(serializer.data)
         except Place.DoesNotExist:
             raise Http404("Place does not exist")
+        
+class AdminBookingsForPlace(APIView):
+    def get(self, request, place_id, event_date):
+        try:
+            place = Place.objects.get(pk=place_id)
+            bookings = Booking.objects.filter(place=place, event_start__date=event_date)
+            serializer = BookingAdminSerializer(bookings, many=True)
+            return Response(serializer.data)
+        except Place.DoesNotExist:
+            raise Http404("Place does not exist")
