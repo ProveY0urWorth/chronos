@@ -112,7 +112,6 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
       initialValues={Initial_Values}
       validationSchema={BookingSchema}
       onSubmit={(values) => {
-        console.log(values)
         dispatch(
           editBooking({
             full_name: values.full_name,

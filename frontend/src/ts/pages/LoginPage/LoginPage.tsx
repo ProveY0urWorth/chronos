@@ -1,4 +1,4 @@
-import { Button, Stack, TextField } from '@mui/material'
+import { Button, CircularProgress, Stack, TextField } from '@mui/material'
 import classNames from 'classnames/bind'
 import { Formik, Form, Field } from 'formik'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
@@ -26,12 +26,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ className = '' }) => {
   const isError = useAppSelector(selectError)
   const dispatch = useAppDispatch()
 
-  if (isError) {
-    console.log('Error')
-  }
-
   if (isLoading) {
-    console.log('loading')
+    return <CircularProgress color='inherit' />
   }
 
   const navigate = useNavigate()
@@ -85,6 +81,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ className = '' }) => {
                 </Button>
               </Stack>
             </Form>
+            {isError && (
+              <ErrorSnackbars
+                openOrNot={true}
+                message={isError.message}
+              />
+            )}
             {isError && (
               <ErrorSnackbars
                 openOrNot={true}

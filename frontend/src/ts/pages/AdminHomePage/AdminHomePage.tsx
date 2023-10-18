@@ -68,9 +68,7 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
   return (
     <Formik
       initialValues={Initial_Values}
-      onSubmit={(values) => {
-        console.log(values)
-      }}
+      onSubmit={() => {}}
     >
       {({ values }) => {
         return (

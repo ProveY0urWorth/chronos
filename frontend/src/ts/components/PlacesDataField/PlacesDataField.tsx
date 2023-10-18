@@ -34,7 +34,6 @@ export const PlaceDataField: React.FC<IPlaceDataFieldProps> = ({
         value={getPlaceValueById(places, placeId)}
         onChange={(_, value) => {
           if (value) {
-            console.log(value.value)
             setFieldValue('placeId', value.value)
           }
         }}
