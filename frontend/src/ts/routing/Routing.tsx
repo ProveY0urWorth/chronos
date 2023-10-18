@@ -6,6 +6,7 @@ import { AdminHomePage } from '../pages/AdminHomePage/AdminHomePage'
 import { BookingAdminPage } from '../pages/BookingAdminPage/BookingAdminPage'
 import { LoginPage } from '../pages/LoginPage/LoginPage'
 import ProtectedRoutes from '../components/ProtectedRoutes'
+import AdminRoutes from '../components/AdminRoutes'
 
 function Routing() {
   return (
@@ -24,13 +25,18 @@ function Routing() {
           element={<HomePage />}
         />
         <Route
-          path={routes.adminPanel}
-          element={<AdminHomePage />}
-        />
-        <Route
-          path={routes.adminBooking}
-          element={<BookingAdminPage />}
-        />
+          path={routes.base}
+          element={<AdminRoutes />}
+        >
+          <Route
+            path={routes.adminPanel}
+            element={<AdminHomePage />}
+          />
+          <Route
+            path={routes.adminBooking}
+            element={<BookingAdminPage />}
+          />
+        </Route>
         <Route
           path={routes.login}
           element={<LoginPage />}
