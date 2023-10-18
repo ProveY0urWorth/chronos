@@ -12,13 +12,18 @@ import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import styles from './BookingAdminPage.module.scss'
 import classNames from 'classnames/bind'
-import { IBooking, createBooking } from '../../redux/features/BookingSlice'
+import {
+  IBooking,
+  createBooking,
+  editBooking,
+} from '../../redux/features/BookingSlice'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { selectError, selectIsLoading } from '../../redux/features/PlacesSlice'
 import { useLocation } from 'react-router-dom'
 import { RoleDataField } from '../../components/RolesDataField/RoleDataField'
 import {
+  IBookingAdminInfo,
   getBookingById,
   selectBookingInfo,
 } from '../../redux/features/BookingInfoSlice'
@@ -38,7 +43,15 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
   const bookingInfo = useAppSelector(selectBookingInfo)
   const dispatch = useAppDispatch()
 
-  const Initial_Values: IBooking = {
+  useEffect(() => {
+    dispatch(getBookingById({ id: unique_id }))
+  }, [dispatch])
+
+  if (isLoading) {
+    return <CircularProgress color='inherit' />
+  }
+
+  let Initial_Values: IBookingAdminInfo = {
     full_name: '',
     phone_number: '',
     event_start: '',
@@ -47,16 +60,23 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
     organizer_info: '',
     role: 0,
     place: placeId,
+    is_approved: false,
+    unique_id: unique_id,
   }
 
-  useEffect(() => {
-    dispatch(getBookingById(unique_id))
-  }, [dispatch])
-
-  if (isLoading) {
-    return <CircularProgress color='inherit' />
-  } else {
-    console.log(bookingInfo)
+  if (bookingInfo) {
+    Initial_Values = {
+      full_name: bookingInfo.full_name,
+      phone_number: bookingInfo.phone_number,
+      event_start: bookingInfo.event_start,
+      event_end: bookingInfo.event_end,
+      technical_equipment: bookingInfo.technical_equipment,
+      organizer_info: bookingInfo.organizer_info,
+      role: bookingInfo.role,
+      place: placeId,
+      is_approved: false,
+      unique_id: unique_id,
+    }
   }
 
   return (
@@ -65,18 +85,20 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
       //validationSchema={BookingSchema}
       onSubmit={(values) => {
         console.log(values)
-        //dispatch(
-        //  createBooking({
-        //    full_name: values.full_name,
-        //    phone_number: values.phone_number,
-        //    event_start: `${date}T${values.event_start}`,
-        //    event_end: `${date}T${values.event_end}`,
-        //    technical_equipment: values.technical_equipment,
-        //    organizer_info: values.organizer_info,
-        //    role: values.role,
-        //    place: values.place,
-        //  })
-        //)
+        dispatch(
+          editBooking({
+            full_name: values.full_name,
+            phone_number: values.phone_number,
+            event_start: `${values.event_start}`,
+            event_end: `${values.event_end}`,
+            technical_equipment: values.technical_equipment,
+            organizer_info: values.organizer_info,
+            role: values.role,
+            place: values.place,
+            is_approved: values.is_approved,
+            unique_id: unique_id,
+          })
+        )
       }}
     >
       {({ values, submitForm }) => {
@@ -88,7 +110,6 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                 spacing={1}
                 alignItems={'center'}
               >
-                Admin
                 <Typography variant='body2'>ФИО заявителя</Typography>
                 <Field
                   as={TextField}
@@ -143,12 +164,21 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                     }
                   />
                 </LocalizationProvider>
-                <Button
-                  onClick={submitForm}
-                  className={cx('credentials__button')}
+                <Stack
+                  direction={'row'}
+                  spacing={4}
                 >
-                  Отправить заявку
-                </Button>
+                  <Button
+                    onClick={(e) => {
+                      values.is_approved = true
+                      submitForm()
+                    }}
+                    //className={cx('credentials__button')}
+                  >
+                    Одобрить заявку
+                  </Button>
+                  <Button color={'warning'}>Отклонить заявку</Button>
+                </Stack>
               </Stack>
             </Form>
             {/* {isError && (

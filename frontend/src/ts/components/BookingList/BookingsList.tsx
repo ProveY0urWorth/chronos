@@ -7,7 +7,10 @@ import {
   Stack,
   Button,
 } from '@mui/material'
-import { IBookingInfo } from '../../redux/features/BookingInfoSlice'
+import {
+  IBookingAdminInfo,
+  IBookingInfo,
+} from '../../redux/features/BookingInfoSlice'
 import styles from './BookingsList.module.scss'
 import { Typography } from '@mui/material'
 import dayjs from 'dayjs'
@@ -18,7 +21,7 @@ import { routes } from '../../routing/config'
 const cx = classNames.bind(styles)
 
 interface EntityListProps {
-  bookings: IBookingInfo[]
+  bookings: IBookingAdminInfo[]
 }
 
 const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
@@ -67,7 +70,7 @@ const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
                   to={`${routes.adminBooking}`}
                   state={{
                     placeId: booking.place,
-                    date: booking.unique_id,
+                    unique_id: booking.unique_id,
                   }}
                 >
                   <Button
@@ -76,7 +79,9 @@ const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
                       maxHeight: { xl: 50 },
                     }}
                   >
-                    Открыть заявку
+                    {booking.is_approved
+                      ? 'Открыть мероприятие'
+                      : 'Открыть заявку'}
                   </Button>
                 </Link>
               </Stack>

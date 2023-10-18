@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../constants/axios'
 import { AxiosError } from 'axios'
 import { RootState } from '../store'
-import { IBooking, selectBooking } from './BookingSlice'
+import { IBooking, selectSuccess } from './BookingSlice'
 
 export interface IBookingInfo extends IBooking {
   unique_id: number
@@ -36,7 +36,7 @@ export const getBookingById = createAsyncThunk<
 })
 
 export const fetchBookingForPlace = createAsyncThunk<
-  IBookingInfo[],
+  IBookingAdminInfo[],
   FecthBookingParams,
   { rejectValue: AxiosError }
 >(
@@ -57,29 +57,10 @@ export const fetchBookingForPlace = createAsyncThunk<
   }
 )
 
-export const fetchAdminBookingForPlace = createAsyncThunk<
-  IBookingAdminInfo[],
-  FecthBookingParams,
-  { rejectValue: AxiosError }
->(
-  'fetchBookingsForPlace',
-  async function (fecthBookingParams, { rejectWithValue }) {
-    try {
-      const { placeId = 0, date = '' } = fecthBookingParams
-      const { data } = await axiosInstance.get(
-        `admin/bookings/${placeId}/${date}/?format=json`
-      )
-      return data
-    } catch (error: any) {
-      return rejectWithValue(error)
-    }
-  }
-)
-
 interface IBookingsInfoState {
   loading: boolean
   error: any | null
-  bookings: IBookingInfo[] | IBookingAdminInfo[]
+  bookings: IBookingAdminInfo[]
   booking: IBooking | null
 }
 
