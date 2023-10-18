@@ -12,6 +12,8 @@ import styles from './BookingsList.module.scss'
 import { Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import classNames from 'classnames/bind'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routing/config'
 
 const cx = classNames.bind(styles)
 
@@ -61,14 +63,22 @@ const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
                   <Typography>Информация об организаторе:</Typography>
                   <p>{booking.organizer_info}</p>
                 </Stack>
-                <Button
-                  sx={{
-                    display: { xl: isAdmin == 'true' ? 'flex' : 'none' },
-                    maxHeight: { xl: 50 },
+                <Link
+                  to={`${routes.adminBooking}`}
+                  state={{
+                    placeId: booking.place,
+                    date: booking.unique_id,
                   }}
                 >
-                  Открыть заявку
-                </Button>
+                  <Button
+                    sx={{
+                      display: { xl: isAdmin == 'true' ? 'flex' : 'none' },
+                      maxHeight: { xl: 50 },
+                    }}
+                  >
+                    Открыть заявку
+                  </Button>
+                </Link>
               </Stack>
             </ListItem>
             <Divider />

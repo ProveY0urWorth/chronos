@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   SelectChangeEvent,
   Stack,
   TextField,
@@ -17,6 +18,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { selectError, selectIsLoading } from '../../redux/features/PlacesSlice'
 import { useLocation } from 'react-router-dom'
 import { RoleDataField } from '../../components/RolesDataField/RoleDataField'
+import {
+  getBookingById,
+  selectBookingInfo,
+} from '../../redux/features/BookingInfoSlice'
 const cx = classNames.bind(styles)
 
 interface BookingAdminPageProps {
@@ -27,9 +32,10 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
   className = '',
 }) => {
   const location = useLocation()
-  const { placeId, date } = location.state
+  const { placeId, unique_id } = location.state
   const isLoading = useAppSelector(selectIsLoading)
   const isError = useAppSelector(selectError)
+  const bookingInfo = useAppSelector(selectBookingInfo)
   const dispatch = useAppDispatch()
 
   const Initial_Values: IBooking = {
@@ -44,8 +50,14 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
   }
 
   useEffect(() => {
-    //dispatch()
+    dispatch(getBookingById(unique_id))
   }, [dispatch])
+
+  if (isLoading) {
+    return <CircularProgress color='inherit' />
+  } else {
+    console.log(bookingInfo)
+  }
 
   return (
     <Formik
@@ -53,7 +65,6 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
       //validationSchema={BookingSchema}
       onSubmit={(values) => {
         console.log(values)
-        console.log(date)
         //dispatch(
         //  createBooking({
         //    full_name: values.full_name,
