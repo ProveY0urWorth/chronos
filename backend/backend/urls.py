@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from chronos.views import PlaceViewSet, BookingAdminViewSet, CreateBookingViewSet, BookingsForPlace, AdminBookingsForPlace
+from chronos.views import PlaceViewSet, BookingAdminViewSet, CreateBookingViewSet, BookingsForPlace, AdminBookingsForPlace, get_csrf_token
 from django.contrib.auth import views as auth_views
 from cauth.views import UserLoginView, CreateUserView
 
@@ -36,5 +36,6 @@ urlpatterns = [
     path('api/admin/bookings/<int:pk>', BookingAdminViewSet.as_view({'delete': 'destroy'}), name='booking-delete'),
     path('api/bookings/<int:place_id>/<str:event_date>/', BookingsForPlace.as_view(), name='bookings-for-place'),
     path('api/admin/bookings/<int:place_id>/<str:event_date>/', AdminBookingsForPlace.as_view(), name='bookings-for-place'),
+    path('api/get-csrf-token/', get_csrf_token, name='get_csrf_token'),
 ]
 

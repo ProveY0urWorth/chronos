@@ -6,7 +6,6 @@ from .models import Place, Booking
 from .serializers import PlaceSerializer, BookingSerializer, BookingAdminSerializer
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
-
 class PlaceViewSet(viewsets.ModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
@@ -72,3 +71,10 @@ class AdminBookingsForPlace(APIView):
             return Response(serializer.data)
         except Place.DoesNotExist:
             raise Http404("Place does not exist")
+        
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
+
+def get_csrf_token(request):
+    csrf_token = get_token(request)
+    return JsonResponse({'csrf_token': csrf_token})
