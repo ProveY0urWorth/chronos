@@ -18,9 +18,10 @@ import {
   fetchBookingForPlace,
   selectBookingsInfo,
 } from '../../redux/features/BookingInfoSlice'
-import dayjs, { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs'
 import { Form, Formik } from 'formik'
 import BookingsList from '../../components/BookingList/BookingsList'
+import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
 
 const cx = classNames.bind(styles)
 
@@ -77,53 +78,61 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
     >
       {({ values, submitForm }) => {
         return (
-          <Form>
-            <Stack
-              paddingLeft={25}
-              marginTop={5}
-            >
-              <Stack direction={'row'}>
-                <Stack direction={'column'}>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <PlaceDataField
-                      places={placesList}
-                      placeId={values.placeId}
-                    />
-                    <DateCalendar
-                      className={cx('credentials__calendar')}
-                      disablePast
-                      shouldDisableDate={shouldDisableDate}
-                      onChange={(e: any) => {
-                        values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
-                        dispatch(
-                          fetchBookingForPlace({
-                            placeId: values.placeId,
-                            date: values.date,
-                          })
-                        )
-                      }}
-                    />
-                  </LocalizationProvider>
+          <div>
+            <Form>
+              <Stack
+                paddingLeft={25}
+                marginTop={5}
+              >
+                <Stack direction={'row'}>
+                  <Stack direction={'column'}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <PlaceDataField
+                        places={placesList}
+                        placeId={values.placeId}
+                      />
+                      <DateCalendar
+                        className={cx('credentials__calendar')}
+                        disablePast
+                        shouldDisableDate={shouldDisableDate}
+                        onChange={(e: any) => {
+                          values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
+                          dispatch(
+                            fetchBookingForPlace({
+                              placeId: values.placeId,
+                              date: values.date,
+                            })
+                          )
+                        }}
+                      />
+                    </LocalizationProvider>
 
-                  <Link
-                    to={`${routes.booking}`}
-                    state={{
-                      placeId: values.placeId,
-                      date: values.date,
-                    }}
-                  >
-                    <Button
-                      className={cx('credentials__button')}
-                      onClick={submitForm}
+                    <Link
+                      to={`${routes.booking}`}
+                      state={{
+                        placeId: values.placeId,
+                        date: values.date,
+                      }}
                     >
-                      Оставить заявку
-                    </Button>
-                  </Link>
+                      <Button
+                        className={cx('credentials__button')}
+                        onClick={submitForm}
+                      >
+                        Оставить заявку
+                      </Button>
+                    </Link>
+                  </Stack>
+                  <BookingsList bookings={bookings} />
                 </Stack>
-                <BookingsList bookings={bookings} />
               </Stack>
-            </Stack>
-          </Form>
+            </Form>
+            {isError && (
+              <ErrorSnackbars
+                openOrNot={true}
+                message={isError.message}
+              />
+            )}
+          </div>
         )
       }}
     </Formik>

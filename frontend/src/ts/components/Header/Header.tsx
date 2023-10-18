@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../../hooks'
 import styles from './Header.module.scss'
 import classNames from 'classnames/bind'
 import { CustomModal } from '../CustomModal/CustomModal'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { logOut } from '../../redux/features/AuthSlice'
 import { routes } from '../../routing/config'
 

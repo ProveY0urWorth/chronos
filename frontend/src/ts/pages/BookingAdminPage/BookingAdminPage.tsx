@@ -1,7 +1,6 @@
 import {
   Button,
   CircularProgress,
-  SelectChangeEvent,
   Stack,
   TextField,
   TextareaAutosize,
@@ -12,13 +11,8 @@ import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import styles from './BookingAdminPage.module.scss'
 import classNames from 'classnames/bind'
-import {
-  IBooking,
-  createBooking,
-  deleteBooking,
-  editBooking,
-} from '../../redux/features/BookingSlice'
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
+import { deleteBooking, editBooking } from '../../redux/features/BookingSlice'
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { selectError, selectIsLoading } from '../../redux/features/PlacesSlice'
 import { useLocation } from 'react-router-dom'
@@ -28,6 +22,7 @@ import {
   getBookingById,
   selectBookingInfo,
 } from '../../redux/features/BookingInfoSlice'
+import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
 const cx = classNames.bind(styles)
 
 interface BookingAdminPageProps {
@@ -155,48 +150,88 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                 />
                 <RoleDataField role={`${values.role}`} />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
+                  <DateTimePicker
                     onChange={(e: any) =>
-                      (values.event_start = e.$H + ':' + e.$m + ':00')
+                      (values.event_end =
+                        e.$y +
+                        '-' +
+                        (e.$M + 1) +
+                        '-' +
+                        e.$D +
+                        'T' +
+                        e.$H +
+                        ':' +
+                        e.$m +
+                        ':00Z')
                     }
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <TimePicker
+                  <DateTimePicker
                     onChange={(e: any) =>
-                      //console.log(e.$H + ':' + e.$m)
-                      (values.event_end = e.$H + ':' + e.$m + ':00')
+                      (values.event_end =
+                        e.$y +
+                        '-' +
+                        (e.$M + 1) +
+                        '-' +
+                        e.$D +
+                        'T' +
+                        e.$H +
+                        ':' +
+                        e.$m +
+                        ':00Z')
                     }
                   />
                 </LocalizationProvider>
-                <Stack
-                  direction={'row'}
-                  spacing={4}
-                >
-                  <Button
-                    onClick={(e) => {
-                      values.is_approved = true
-                      submitForm()
-                    }}
-                    //className={cx('credentials__button')}
+                {!values.is_approved && (
+                  <Stack
+                    direction={'row'}
+                    spacing={4}
                   >
-                    Одобрить заявку
-                  </Button>
-                  <Button
-                    color={'warning'}
-                    onClick={handleDelete}
+                    <Button
+                      onClick={() => {
+                        values.is_approved = true
+                        submitForm()
+                      }}
+                    >
+                      Одобрить заявку
+                    </Button>
+                    <Button
+                      color={'secondary'}
+                      onClick={submitForm}
+                    >
+                      Отложить заявку
+                    </Button>
+                    <Button
+                      color={'warning'}
+                      onClick={handleDelete}
+                    >
+                      Отклонить заявку
+                    </Button>
+                  </Stack>
+                )}
+                {values.is_approved && (
+                  <Stack
+                    direction={'row'}
+                    spacing={4}
                   >
-                    Отклонить заявку
-                  </Button>
-                </Stack>
+                    <Button onClick={submitForm}>Сохранить данные</Button>
+                    <Button
+                      color={'warning'}
+                      onClick={handleDelete}
+                    >
+                      Удалить мероприятие
+                    </Button>
+                  </Stack>
+                )}
               </Stack>
             </Form>
-            {/* {isError && (
+            {isError && (
               <ErrorSnackbars
                 openOrNot={true}
                 message={isError.message}
               />
-            )} */}
+            )}
           </div>
         )
       }}

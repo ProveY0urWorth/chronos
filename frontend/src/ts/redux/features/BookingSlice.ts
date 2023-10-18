@@ -119,7 +119,7 @@ export const BookingSlice = createSlice({
           loading: true,
         }
       })
-      .addCase(createBooking.fulfilled, (state, action) => {
+      .addCase(createBooking.fulfilled, (state) => {
         return {
           ...state,
           loading: false,

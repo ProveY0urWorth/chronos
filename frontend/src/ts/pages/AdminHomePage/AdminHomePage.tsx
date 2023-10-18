@@ -1,12 +1,6 @@
-import {
-  DateCalendar,
-  DatePicker,
-  LocalizationProvider,
-} from '@mui/x-date-pickers'
+import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React, { useEffect } from 'react'
-import styles from './AdminHomePage.module.scss'
-import classNames from 'classnames/bind'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import {
   getPlaces,
@@ -14,10 +8,9 @@ import {
   selectIsLoading,
   selectPlaces,
 } from '../../redux/features/PlacesSlice'
-import { Button, CircularProgress, Stack } from '@mui/material'
+import { CircularProgress, Stack } from '@mui/material'
 import { PlaceDataField } from '../../components/PlacesDataField/PlacesDataField'
-import { routes } from '../../routing/config'
-import { Link } from 'react-router-dom'
+
 import {
   fetchBookingForPlace,
   selectBookingsInfo,
@@ -25,8 +18,7 @@ import {
 import { Dayjs } from 'dayjs'
 import { Form, Formik } from 'formik'
 import BookingsList from '../../components/BookingList/BookingsList'
-
-const cx = classNames.bind(styles)
+import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
 
 interface AdminHomePageProps {
   className?: string
@@ -80,38 +72,46 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
         console.log(values)
       }}
     >
-      {({ values, submitForm }) => {
+      {({ values }) => {
         return (
-          <Form>
-            <Stack
-              marginLeft={25}
-              marginTop={5}
-              direction={'row'}
-            >
-              <Stack>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <PlaceDataField
-                    places={placesList}
-                    placeId={values.placeId}
-                  />
-                  <DateCalendar
-                    disablePast
-                    shouldDisableDate={shouldDisableDate}
-                    onChange={(e: any) => {
-                      values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
-                      dispatch(
-                        fetchBookingForPlace({
-                          placeId: values.placeId,
-                          date: values.date,
-                        })
-                      )
-                    }}
-                  />
-                </LocalizationProvider>
+          <div>
+            <Form>
+              <Stack
+                marginLeft={25}
+                marginTop={5}
+                direction={'row'}
+              >
+                <Stack>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <PlaceDataField
+                      places={placesList}
+                      placeId={values.placeId}
+                    />
+                    <DateCalendar
+                      disablePast
+                      shouldDisableDate={shouldDisableDate}
+                      onChange={(e: any) => {
+                        values.date = e.$y + '-' + (e.$M + 1) + '-' + e.$D
+                        dispatch(
+                          fetchBookingForPlace({
+                            placeId: values.placeId,
+                            date: values.date,
+                          })
+                        )
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Stack>
+                <BookingsList bookings={bookings} />
               </Stack>
-              <BookingsList bookings={bookings} />
-            </Stack>
-          </Form>
+            </Form>
+            {isError && (
+              <ErrorSnackbars
+                openOrNot={true}
+                message={isError.message}
+              />
+            )}
+          </div>
         )
       }}
     </Formik>

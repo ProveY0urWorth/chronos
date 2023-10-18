@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../constants/axios'
 import { AxiosError } from 'axios'
 import { RootState } from '../store'
-import { IBooking, selectSuccess } from './BookingSlice'
+import { IBooking } from './BookingSlice'
 
 export interface IBookingInfo extends IBooking {
   unique_id: number

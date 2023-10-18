@@ -1,13 +1,12 @@
 import {
   Button,
-  SelectChangeEvent,
   Stack,
   TextField,
   TextareaAutosize,
   Typography,
 } from '@mui/material'
 import { Field, Form, Formik } from 'formik'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import styles from './BookingPage.module.scss'
 import classNames from 'classnames/bind'
@@ -17,6 +16,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { selectError, selectIsLoading } from '../../redux/features/PlacesSlice'
 import { useLocation } from 'react-router-dom'
 import { RoleDataField } from '../../components/RolesDataField/RoleDataField'
+import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
+import dayjs from 'dayjs'
 const cx = classNames.bind(styles)
 
 interface BookingPageProps {
@@ -29,8 +30,6 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
   const isError = useAppSelector(selectError)
   const dispatch = useAppDispatch()
 
-  console.log(date)
-
   const Initial_Values: IBooking = {
     full_name: '',
     phone_number: '',
@@ -41,10 +40,6 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
     role: 0,
     place: placeId,
   }
-
-  useEffect(() => {
-    //dispatch()
-  }, [dispatch])
 
   return (
     <Formik
@@ -108,6 +103,8 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                         <Typography>Время начала</Typography>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
+                            minTime={dayjs().set('hour', 8).set('minutes', 30)}
+                            maxTime={dayjs().set('hour', 21).set('minutes', 0)}
                             onChange={(e: any) =>
                               (values.event_start = e.$H + ':' + e.$m)
                             }
@@ -119,8 +116,9 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                         <Typography>Время конца</Typography>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <TimePicker
+                            minTime={dayjs().set('hour', 9).set('minutes', 0)}
+                            maxTime={dayjs().set('hour', 22).set('minutes', 0)}
                             onChange={(e: any) =>
-                              //console.log(e.$H + ':' + e.$m)
                               (values.event_end = e.$H + ':' + e.$m)
                             }
                           />
@@ -167,12 +165,12 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                 </Button>
               </Stack>
             </Form>
-            {/* {isError && (
+            {isError && (
               <ErrorSnackbars
                 openOrNot={true}
                 message={isError.message}
               />
-            )} */}
+            )}
           </div>
         )
       }}

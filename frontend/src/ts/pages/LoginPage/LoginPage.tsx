@@ -8,8 +8,9 @@ import {
   selectIsLoading,
 } from '../../redux/features/AuthSlice'
 import styles from './LoginPage.module.scss'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { routes } from '../../routing/config'
+import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
 
 const cx = classNames.bind(styles)
 interface LoginPageProps {
@@ -54,35 +55,43 @@ export const LoginPage: React.FC<LoginPageProps> = ({ className = '' }) => {
     >
       {({ values, submitForm }) => {
         return (
-          <Form>
-            <Stack
-              alignItems={'center'}
-              spacing={3}
-              margin={25}
-            >
-              <Field
-                as={TextField}
-                name='login'
-                className={cx('credentials__textfield')}
-                label='Логин'
-                value={values.login}
-              />
-              <Field
-                as={TextField}
-                name='password'
-                type={'password'}
-                className={cx('credentials__textfield')}
-                label='Пароль'
-                value={values.password}
-              />
-              <Button
-                className={cx('credentials__button')}
-                onClick={submitForm}
+          <div>
+            <Form>
+              <Stack
+                alignItems={'center'}
+                spacing={3}
+                margin={25}
               >
-                Войти
-              </Button>
-            </Stack>
-          </Form>
+                <Field
+                  as={TextField}
+                  name='login'
+                  className={cx('credentials__textfield')}
+                  label='Логин'
+                  value={values.login}
+                />
+                <Field
+                  as={TextField}
+                  name='password'
+                  type={'password'}
+                  className={cx('credentials__textfield')}
+                  label='Пароль'
+                  value={values.password}
+                />
+                <Button
+                  className={cx('credentials__button')}
+                  onClick={submitForm}
+                >
+                  Войти
+                </Button>
+              </Stack>
+            </Form>
+            {isError && (
+              <ErrorSnackbars
+                openOrNot={true}
+                message={isError.message}
+              />
+            )}
+          </div>
         )
       }}
     </Formik>
