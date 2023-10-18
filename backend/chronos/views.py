@@ -17,7 +17,7 @@ class PlaceViewSet(viewsets.ModelViewSet):
 class BookingAdminViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingAdminSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
 
 class CreateBookingViewSet(viewsets.ViewSet):
