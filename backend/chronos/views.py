@@ -19,7 +19,6 @@ class BookingAdminViewSet(viewsets.ModelViewSet):
     serializer_class = BookingAdminSerializer
     #permission_classes = [permissions.IsAuthenticated]
 
-    @csrf_exempt
     def update(self, request, pk=None):
         try:
             booking = Booking.objects.get(pk=pk)
@@ -32,7 +31,6 @@ class BookingAdminViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    @csrf_exempt
     def destroy(self, request, pk=None):
         try:
             booking = Booking.objects.get(pk=pk)

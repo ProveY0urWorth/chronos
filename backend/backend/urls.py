@@ -25,15 +25,13 @@ router = DefaultRouter()
 router.register(r'admin/bookings', BookingAdminViewSet)
 
 urlpatterns = [
-    path('api/admin/bookings/<int:pk>/', BookingAdminViewSet.as_view({'get': 'retrieve'}), name='booking-detail'),
+    path('api/admin/bookings/<int:pk>/', BookingAdminViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='booking-detail'),
     path('api/register/', CreateUserView.as_view(), name='user-register'),
     path('api/login/', UserLoginView.as_view(), name='user-login'),
     path('api/places/list/', PlaceViewSet.as_view({'get': 'list'}), name='place-list'),
     path('api/bookings/create', CreateBookingViewSet.as_view({'post': 'create'}), name='create-booking'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/admin/bookings/<int:pk>', BookingAdminViewSet.as_view({'put': 'update'}), name='booking-update'),
-    path('api/admin/bookings/<int:pk>', BookingAdminViewSet.as_view({'delete': 'destroy'}), name='booking-delete'),
     path('api/bookings/<int:place_id>/<str:event_date>/', BookingsForPlace.as_view(), name='bookings-for-place'),
     path('api/admin/bookings/<int:place_id>/<str:event_date>/', AdminBookingsForPlace.as_view(), name='bookings-for-place'),
     path('api/get-csrf-token/', get_csrf_token, name='get_csrf_token'),
