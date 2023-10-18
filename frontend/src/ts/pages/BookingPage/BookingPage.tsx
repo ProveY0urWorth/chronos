@@ -5,19 +5,26 @@ import {
   TextareaAutosize,
   Typography,
 } from '@mui/material'
-import { Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import styles from './BookingPage.module.scss'
 import classNames from 'classnames/bind'
-import { IBooking, createBooking } from '../../redux/features/BookingSlice'
+import {
+  IBooking,
+  createBooking,
+  selectSuccess,
+} from '../../redux/features/BookingSlice'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { selectError, selectIsLoading } from '../../redux/features/PlacesSlice'
+import { selectError } from '../../redux/features/PlacesSlice'
 import { useLocation } from 'react-router-dom'
 import { RoleDataField } from '../../components/RolesDataField/RoleDataField'
-import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
+import { ErrorSnackbars } from '../../components/ErrorSnackbar/ErrorSnackbar'
 import dayjs from 'dayjs'
+import { BookingSchema } from '../../validation/BookingFormValidator'
+import { CustomModal } from '../../components/CustomModal/CustomModal'
+import { routes } from '../../routing/config'
 const cx = classNames.bind(styles)
 
 interface BookingPageProps {
@@ -26,8 +33,8 @@ interface BookingPageProps {
 
 export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
   const { placeId, date } = useLocation().state
-  const isLoading = useAppSelector(selectIsLoading)
   const isError = useAppSelector(selectError)
+  const isSuccess = useAppSelector(selectSuccess)
   const dispatch = useAppDispatch()
 
   const Initial_Values: IBooking = {
@@ -41,10 +48,21 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
     place: placeId,
   }
 
+  if (isSuccess) {
+    return (
+      <CustomModal
+        title='Успех'
+        description='Запрос исполнен успешно'
+        buttonLabel='О.К.'
+        rout={routes.adminPanel}
+      />
+    )
+  }
+
   return (
     <Formik
       initialValues={Initial_Values}
-      //validationSchema={BookingSchema}
+      validationSchema={BookingSchema}
       onSubmit={(values) => {
         console.log(values)
         console.log(date)
@@ -82,9 +100,14 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                       <Field
                         as={TextField}
                         name='full_name'
-                        label='Введите ФИО заявителя'
+                        placeholder='Введите ФИО заявителя'
                         value={values.full_name}
                         className={cx('credentials__textfield')}
+                      />
+                      <ErrorMessage
+                        name='full_name'
+                        component={'div'}
+                        className={cx('error')}
                       />
                     </Stack>
                     <Stack padding={1}>
@@ -92,9 +115,14 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                       <Field
                         as={TextField}
                         name='phone_number'
-                        label='Введите номер телефона'
+                        placeholder='Введите номер телефона'
                         value={values.phone_number}
                         className={cx('credentials__textfield')}
+                      />
+                      <ErrorMessage
+                        name='phone_number'
+                        component={'div'}
+                        className={cx('error')}
                       />
                     </Stack>
                     <RoleDataField role={`${values.role}`} />
@@ -110,6 +138,11 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                             }
                           />
                         </LocalizationProvider>
+                        <ErrorMessage
+                          name='event_start'
+                          component={'div'}
+                          className={cx('error')}
+                        />
                       </Stack>
 
                       <Stack spacing={1}>
@@ -123,6 +156,11 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                             }
                           />
                         </LocalizationProvider>
+                        <ErrorMessage
+                          name='event_end'
+                          component={'div'}
+                          className={cx('error')}
+                        />
                       </Stack>
                     </Stack>
                   </Stack>
@@ -140,6 +178,11 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                         value={values.technical_equipment}
                         className={cx('credentials__textfield')}
                       />
+                      <ErrorMessage
+                        name='technical_equipment'
+                        component={'div'}
+                        className={cx('error')}
+                      />
                     </Stack>
                     <Stack spacing={1}>
                       <Typography variant='body2'>
@@ -152,6 +195,11 @@ export const BookingPage: React.FC<BookingPageProps> = ({ className = '' }) => {
                         placeholder='Введите информацию о мероприятии'
                         value={values.organizer_info}
                         className={cx('credentials__textfield')}
+                      />
+                      <ErrorMessage
+                        name='organizer_info'
+                        component={'div'}
+                        className={cx('error')}
                       />
                     </Stack>
                   </Stack>

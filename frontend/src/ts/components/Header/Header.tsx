@@ -1,7 +1,6 @@
 import { Button, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useAppDispatch } from '../../../hooks'
-//import { logOut } from '../../redux/features/authSlice'
 import styles from './Header.module.scss'
 import classNames from 'classnames/bind'
 import { CustomModal } from '../CustomModal/CustomModal'
@@ -46,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
         <a href={isAdmin === 'true' ? routes.adminPanel : routes.home}>
           <img
             src='../../../../public/headerLogo.png'
-            height={65}
+            height={56}
             alt='Лого СевГУ'
             color='white'
           />

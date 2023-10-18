@@ -47,7 +47,6 @@ export const LoginSlice = createSlice({
   reducers: {
     logOut: () => {
       localStorage.clear()
-
       return {
         ...initialState,
         isInitialised: true,
@@ -62,7 +61,7 @@ export const LoginSlice = createSlice({
           loading: true,
         }
       })
-      .addCase(LoginAttempt.fulfilled, (state, action) => {
+      .addCase(LoginAttempt.fulfilled, (state) => {
         localStorage.setItem('isAdmin', 'true')
         return {
           ...state,

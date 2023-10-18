@@ -21,7 +21,7 @@ import {
 import { Dayjs } from 'dayjs'
 import { Form, Formik } from 'formik'
 import BookingsList from '../../components/BookingList/BookingsList'
-import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
+import { ErrorSnackbars } from '../../components/ErrorSnackbar/ErrorSnackbar'
 
 const cx = classNames.bind(styles)
 

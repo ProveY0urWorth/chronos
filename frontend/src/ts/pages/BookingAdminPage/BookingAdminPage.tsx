@@ -6,12 +6,16 @@ import {
   TextareaAutosize,
   Typography,
 } from '@mui/material'
-import { Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import styles from './BookingAdminPage.module.scss'
 import classNames from 'classnames/bind'
-import { deleteBooking, editBooking } from '../../redux/features/BookingSlice'
+import {
+  deleteBooking,
+  editBooking,
+  selectSuccess,
+} from '../../redux/features/BookingSlice'
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { selectError, selectIsLoading } from '../../redux/features/PlacesSlice'
@@ -22,7 +26,11 @@ import {
   getBookingById,
   selectBookingInfo,
 } from '../../redux/features/BookingInfoSlice'
-import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
+import { ErrorSnackbars } from '../../components/ErrorSnackbar/ErrorSnackbar'
+import { BookingSchema } from '../../validation/BookingFormValidator'
+import { CustomModal } from '../../components/CustomModal/CustomModal'
+import { routes } from '../../routing/config'
+import dayjs from 'dayjs'
 const cx = classNames.bind(styles)
 
 interface BookingAdminPageProps {
@@ -37,7 +45,10 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
   const isLoading = useAppSelector(selectIsLoading)
   const isError = useAppSelector(selectError)
   const bookingInfo = useAppSelector(selectBookingInfo)
+  const isSuccess = useAppSelector(selectSuccess)
   const dispatch = useAppDispatch()
+
+  const [redact, setRedact] = React.useState(false)
 
   useEffect(() => {
     dispatch(getBookingById({ id: unique_id }))
@@ -77,12 +88,29 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
 
   const handleDelete = () => {
     dispatch(deleteBooking({ id: unique_id }))
+    setRedact(true)
+  }
+
+  const parseTime = (date: string) => {
+    const parsedDate = dayjs(date)
+    return parsedDate
+  }
+
+  if (isSuccess && redact) {
+    return (
+      <CustomModal
+        title='Успех'
+        description='Запрос исполнен успешно'
+        buttonLabel='О.К.'
+        rout={routes.adminPanel}
+      />
+    )
   }
 
   return (
     <Formik
       initialValues={Initial_Values}
-      //validationSchema={BookingSchema}
+      validationSchema={BookingSchema}
       onSubmit={(values) => {
         console.log(values)
         dispatch(
@@ -99,6 +127,7 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
             unique_id: unique_id,
           })
         )
+        setRedact(true)
       }}
     >
       {({ values, submitForm }) => {
@@ -118,6 +147,11 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   value={values.full_name}
                   className={cx('credentials__textfield')}
                 />
+                <ErrorMessage
+                  name='full_name'
+                  component={'div'}
+                  className={cx('error')}
+                />
                 <Typography variant='body2'>Номер телефона</Typography>
                 <Field
                   as={TextField}
@@ -125,6 +159,11 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   label='Введите номер телефона'
                   value={values.phone_number}
                   className={cx('credentials__textfield')}
+                />
+                <ErrorMessage
+                  name='phone_number'
+                  component={'div'}
+                  className={cx('error')}
                 />
                 <Typography variant='body2'>
                   Техническое оборудование
@@ -137,6 +176,11 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   value={values.technical_equipment}
                   className={cx('credentials__textfield')}
                 />
+                <ErrorMessage
+                  name='technical_equipment'
+                  component={'div'}
+                  className={cx('error')}
+                />
                 <Typography variant='body2'>
                   Информация о мероприятии
                 </Typography>
@@ -148,11 +192,17 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   value={values.organizer_info}
                   className={cx('credentials__textfield')}
                 />
+                <ErrorMessage
+                  name='organizer_info'
+                  component={'div'}
+                  className={cx('error')}
+                />
                 <RoleDataField role={`${values.role}`} />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateTimePicker
+                    defaultValue={parseTime(values.event_start)}
                     onChange={(e: any) =>
-                      (values.event_end =
+                      (values.event_start =
                         e.$y +
                         '-' +
                         (e.$M + 1) +
@@ -166,8 +216,14 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                     }
                   />
                 </LocalizationProvider>
+                <ErrorMessage
+                  name='event_start'
+                  component={'div'}
+                  className={cx('error')}
+                />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DateTimePicker
+                    defaultValue={parseTime(values.event_end)}
                     onChange={(e: any) =>
                       (values.event_end =
                         e.$y +
@@ -183,6 +239,11 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                     }
                   />
                 </LocalizationProvider>
+                <ErrorMessage
+                  name='event_end'
+                  component={'div'}
+                  className={cx('error')}
+                />
                 {!values.is_approved && (
                   <Stack
                     direction={'row'}

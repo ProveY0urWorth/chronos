@@ -73,7 +73,7 @@ const initialState: IBookingsInfoState = {
 
 export const BookingsInfoSlice = createSlice({
   name: 'boookingInfo',
-  initialState: initialState,
+  initialState,
   reducers: {},
   extraReducers: (builder) =>
     builder

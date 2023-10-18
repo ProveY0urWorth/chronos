@@ -16,7 +16,15 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   )
 })
 
-export default function ErrorSnackbars({ openOrNot, message }) {
+interface ErrorSnackbarProps {
+  openOrNot: boolean
+  message: string
+}
+
+export const ErrorSnackbars: React.FC<ErrorSnackbarProps> = ({
+  openOrNot,
+  message,
+}) => {
   const [open, setOpen] = React.useState(openOrNot)
 
   const handleClose = (

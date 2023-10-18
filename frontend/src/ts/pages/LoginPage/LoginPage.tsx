@@ -10,7 +10,7 @@ import {
 import styles from './LoginPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import { routes } from '../../routing/config'
-import ErrorSnackbars from '../../components/ErrorSnackbar/ErrorSnackbar'
+import { ErrorSnackbars } from '../../components/ErrorSnackbar/ErrorSnackbar'
 
 const cx = classNames.bind(styles)
 interface LoginPageProps {
