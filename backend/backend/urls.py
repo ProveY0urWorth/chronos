@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from chronos.views import PlaceViewSet, BookingAdminViewSet, CreateBookingViewSet, BookingsForPlace
+from chronos.views import PlaceViewSet, BookingAdminViewSet, CreateBookingViewSet, BookingsForPlace, AdminBookingsForPlace
 from django.contrib.auth import views as auth_views
 from cauth.views import UserLoginView, CreateUserView
 
@@ -33,5 +33,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/bookings/<int:place_id>/<str:event_date>/', BookingsForPlace.as_view(), name='bookings-for-place'),
+    path('api/admin/bookings/<int:place_id>/<str:event_date>/', AdminBookingsForPlace.as_view(), name='bookings-for-place'),
 ]
 
