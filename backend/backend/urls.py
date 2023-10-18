@@ -32,6 +32,8 @@ urlpatterns = [
     path('api/bookings/create', CreateBookingViewSet.as_view({'post': 'create'}), name='create-booking'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/admin/bookings/<int:pk>', BookingAdminViewSet.as_view({'put': 'update'}), name='booking-update'),
+    path('api/admin/bookings/<int:pk>', BookingAdminViewSet.as_view({'delete': 'destroy'}), name='booking-delete'),
     path('api/bookings/<int:place_id>/<str:event_date>/', BookingsForPlace.as_view(), name='bookings-for-place'),
     path('api/admin/bookings/<int:place_id>/<str:event_date>/', AdminBookingsForPlace.as_view(), name='bookings-for-place'),
 ]
