@@ -25,6 +25,7 @@ router = DefaultRouter()
 router.register(r'admin/bookings', BookingAdminViewSet)
 
 urlpatterns = [
+    path('api/admin/bookings/<int:pk>/', BookingAdminViewSet.as_view({'get': 'retrieve'}), name='booking-detail'),
     path('api/register/', CreateUserView.as_view(), name='user-register'),
     path('api/login/', UserLoginView.as_view(), name='user-login'),
     path('api/places/list/', PlaceViewSet.as_view({'get': 'list'}), name='place-list'),
