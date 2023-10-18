@@ -17,9 +17,10 @@ const cx = classNames.bind(styles)
 
 interface EntityListProps {
   bookings: IBookingInfo[]
+  isAdmin: boolean
 }
 
-const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
+const BookingsList: React.FC<EntityListProps> = ({ bookings, isAdmin }) => {
   const parseTime = (date: string) => {
     const parsedDate = dayjs(date)
     const hour = parsedDate.format('HH')
@@ -60,7 +61,14 @@ const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
                   <Typography>Информация об организаторе:</Typography>
                   <p>{booking.organizer_info}</p>
                 </Stack>
-                <Button sx={{ display: { xl: 'none' } }}>Открыть заявку</Button>
+                <Button
+                  sx={{
+                    display: { xl: isAdmin ? 'flex' : 'none' },
+                    maxHeight: { xl: 50 },
+                  }}
+                >
+                  Открыть заявку
+                </Button>
               </Stack>
             </ListItem>
             <Divider />

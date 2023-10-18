@@ -109,7 +109,10 @@ export const AdminHomePage: React.FC<AdminHomePageProps> = ({
                   />
                 </LocalizationProvider>
               </Stack>
-              <BookingsList bookings={bookings} />
+              <BookingsList
+                bookings={bookings}
+                isAdmin={true}
+              />
             </Stack>
           </Form>
         )

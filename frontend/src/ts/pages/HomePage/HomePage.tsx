@@ -120,7 +120,10 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                     </Button>
                   </Link>
                 </Stack>
-                <BookingsList bookings={bookings} />
+                <BookingsList
+                  bookings={bookings}
+                  isAdmin={false}
+                />
               </Stack>
             </Stack>
           </Form>
