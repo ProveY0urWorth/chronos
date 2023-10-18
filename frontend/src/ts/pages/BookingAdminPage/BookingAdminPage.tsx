@@ -15,6 +15,7 @@ import classNames from 'classnames/bind'
 import {
   IBooking,
   createBooking,
+  deleteBooking,
   editBooking,
 } from '../../redux/features/BookingSlice'
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers'
@@ -77,6 +78,10 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
       is_approved: false,
       unique_id: unique_id,
     }
+  }
+
+  const handleDelete = () => {
+    dispatch(deleteBooking({ id: unique_id }))
   }
 
   return (
@@ -177,7 +182,12 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
                   >
                     Одобрить заявку
                   </Button>
-                  <Button color={'warning'}>Отклонить заявку</Button>
+                  <Button
+                    color={'warning'}
+                    onClick={handleDelete}
+                  >
+                    Отклонить заявку
+                  </Button>
                 </Stack>
               </Stack>
             </Form>

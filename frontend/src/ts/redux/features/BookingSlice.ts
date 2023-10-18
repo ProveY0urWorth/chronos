@@ -15,6 +15,10 @@ export interface IBooking {
   place: number
 }
 
+interface IBookingId {
+  id: number
+}
+
 interface IBookingState {
   loading: boolean
   error: any | null
@@ -69,7 +73,7 @@ export const editBooking = createAsyncThunk<
 >('editBooking', async function (IBookingAdminInfo, { rejectWithValue }) {
   try {
     const { data } = await axiosInstance.put(
-      `bookings/${IBookingAdminInfo.unique_id}/`,
+      `admin/bookings/${IBookingAdminInfo.unique_id}/`,
       {
         full_name: IBookingAdminInfo.full_name,
         phone_number: IBookingAdminInfo.phone_number,
@@ -90,11 +94,13 @@ export const editBooking = createAsyncThunk<
 
 export const deleteBooking = createAsyncThunk<
   any,
-  number,
+  IBookingId,
   { rejectValue: AxiosError }
->('editBooking', async function (number, { rejectWithValue }) {
+>('deleteBooking', async function (IBookingId, { rejectWithValue }) {
   try {
-    const { data } = await axiosInstance.delete(`bookings/${number}/`)
+    const { data } = await axiosInstance.delete(
+      `admin/bookings/${IBookingId.id}/`
+    )
     return data
   } catch (error: any) {
     return rejectWithValue(error)
@@ -134,7 +140,7 @@ export const BookingSlice = createSlice({
           loading: true,
         }
       })
-      .addCase(editBooking.fulfilled, (state, action) => {
+      .addCase(editBooking.fulfilled, (state) => {
         return {
           ...state,
           loading: false,
@@ -143,6 +149,27 @@ export const BookingSlice = createSlice({
         }
       })
       .addCase(editBooking.rejected, (state, action) => {
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        }
+      })
+      .addCase(deleteBooking.pending, (state) => {
+        return {
+          ...state,
+          loading: true,
+        }
+      })
+      .addCase(deleteBooking.fulfilled, (state) => {
+        return {
+          ...state,
+          loading: false,
+          success: true,
+          error: null,
+        }
+      })
+      .addCase(deleteBooking.rejected, (state, action) => {
         return {
           ...state,
           loading: false,
