@@ -8,19 +8,21 @@ export interface ILogin {
   password: string
 }
 
-interface IBookingState {
+interface IAuthState {
   loading: boolean
   error: any | null
+  success: boolean
   login: ILogin
 }
 
-const initialState: IBookingState = {
+const initialState: IAuthState = {
   loading: false,
   error: null,
   login: {
     login: '',
     password: '',
   },
+  success: false,
 }
 
 export const LoginAttempt = createAsyncThunk<
@@ -42,7 +44,16 @@ export const LoginAttempt = createAsyncThunk<
 export const LoginSlice = createSlice({
   name: 'login',
   initialState,
-  reducers: {},
+  reducers: {
+    logOut: () => {
+      localStorage.clear()
+
+      return {
+        ...initialState,
+        isInitialised: true,
+      }
+    },
+  },
   extraReducers: (builder) =>
     builder
       .addCase(LoginAttempt.pending, (state) => {
@@ -52,10 +63,12 @@ export const LoginSlice = createSlice({
         }
       })
       .addCase(LoginAttempt.fulfilled, (state, action) => {
+        localStorage.setItem('isAdmin', 'true')
         return {
           ...state,
           loading: false,
           error: null,
+          success: true,
         }
       })
       .addCase(LoginAttempt.rejected, (state, action) => {
@@ -67,8 +80,10 @@ export const LoginSlice = createSlice({
       }),
 })
 
+export const { logOut } = LoginSlice.actions
+
 export const selectIsLoading = (state: RootState) => state.login.loading
-//export const selectBooking = (state: RootState) => state.login.booking
+export const selectSuccess = (state: RootState) => state.login.success
 export const selectError = (state: RootState) => state.login.error
 
 export default LoginSlice.reducer

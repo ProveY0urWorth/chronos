@@ -7,6 +7,11 @@ import {
   selectError,
   selectIsLoading,
 } from '../../redux/features/AuthSlice'
+import styles from './LoginPage.module.scss'
+import { Link, useNavigate } from 'react-router-dom'
+import { routes } from '../../routing/config'
+
+const cx = classNames.bind(styles)
 interface LoginPageProps {
   className?: string
 }
@@ -28,36 +33,54 @@ export const LoginPage: React.FC<LoginPageProps> = ({ className = '' }) => {
     console.log('loading')
   }
 
+  const navigate = useNavigate()
+
+  function handleClick() {
+    navigate(routes.adminPanel)
+  }
+
   return (
     <Formik
       initialValues={Initial_values}
       onSubmit={(values) => {
-        console.log(values)
         dispatch(
           LoginAttempt({
             login: values.login,
             password: values.password,
           })
         )
+        handleClick()
       }}
     >
       {({ values, submitForm }) => {
         return (
           <Form>
-            <Stack>
+            <Stack
+              alignItems={'center'}
+              spacing={3}
+              margin={25}
+            >
               <Field
                 as={TextField}
                 name='login'
+                className={cx('credentials__textfield')}
                 label='Логин'
                 value={values.login}
               />
               <Field
                 as={TextField}
                 name='password'
+                type={'password'}
+                className={cx('credentials__textfield')}
                 label='Пароль'
                 value={values.password}
               />
-              <Button onClick={submitForm}>ЗАЯВОЧКА</Button>
+              <Button
+                className={cx('credentials__button')}
+                onClick={submitForm}
+              >
+                Войти
+              </Button>
             </Stack>
           </Form>
         )

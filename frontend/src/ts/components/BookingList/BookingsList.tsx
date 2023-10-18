@@ -17,10 +17,10 @@ const cx = classNames.bind(styles)
 
 interface EntityListProps {
   bookings: IBookingInfo[]
-  isAdmin: boolean
 }
 
-const BookingsList: React.FC<EntityListProps> = ({ bookings, isAdmin }) => {
+const BookingsList: React.FC<EntityListProps> = ({ bookings }) => {
+  const isAdmin = localStorage.getItem('isAdmin')
   const parseTime = (date: string) => {
     const parsedDate = dayjs(date)
     const hour = parsedDate.format('HH')
@@ -63,7 +63,7 @@ const BookingsList: React.FC<EntityListProps> = ({ bookings, isAdmin }) => {
                 </Stack>
                 <Button
                   sx={{
-                    display: { xl: isAdmin ? 'flex' : 'none' },
+                    display: { xl: isAdmin == 'true' ? 'flex' : 'none' },
                     maxHeight: { xl: 50 },
                   }}
                 >

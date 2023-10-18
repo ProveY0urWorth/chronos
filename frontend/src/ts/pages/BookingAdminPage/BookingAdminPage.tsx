@@ -54,18 +54,18 @@ export const BookingAdminPage: React.FC<BookingAdminPageProps> = ({
       onSubmit={(values) => {
         console.log(values)
         console.log(date)
-        dispatch(
-          createBooking({
-            full_name: values.full_name,
-            phone_number: values.phone_number,
-            event_start: `${date}T${values.event_start}`,
-            event_end: `${date}T${values.event_end}`,
-            technical_equipment: values.technical_equipment,
-            organizer_info: values.organizer_info,
-            role: values.role,
-            place: values.place,
-          })
-        )
+        //dispatch(
+        //  createBooking({
+        //    full_name: values.full_name,
+        //    phone_number: values.phone_number,
+        //    event_start: `${date}T${values.event_start}`,
+        //    event_end: `${date}T${values.event_end}`,
+        //    technical_equipment: values.technical_equipment,
+        //    organizer_info: values.organizer_info,
+        //    role: values.role,
+        //    place: values.place,
+        //  })
+        //)
       }}
     >
       {({ values, submitForm }) => {

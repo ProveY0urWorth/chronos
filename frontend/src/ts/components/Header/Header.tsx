@@ -5,7 +5,9 @@ import { useAppDispatch } from '../../../hooks'
 import styles from './Header.module.scss'
 import classNames from 'classnames/bind'
 import { CustomModal } from '../CustomModal/CustomModal'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { logOut } from '../../redux/features/AuthSlice'
+import { routes } from '../../routing/config'
 
 const cx = classNames.bind(styles)
 
@@ -14,13 +16,20 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
-  const dispatch = useAppDispatch()
   const isAdmin = localStorage.getItem('isAdmin')
+  const dispatch = useAppDispatch()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const navigate = useNavigate()
+
+  function handleClick() {
+    navigate(routes.home)
+  }
 
   const handleLogout = () => {
-    //dispatch(logOut())
+    dispatch(logOut())
+    handleCloseModal()
+    handleClick()
   }
 
   const handleOpenModal = () => {
@@ -34,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   return (
     <>
       <div className={cx('header__header', className)}>
-        <a href='https://www.sevsu.ru/'>
+        <a href={isAdmin === 'true' ? routes.adminPanel : routes.home}>
           <img
             src='../../../../public/headerLogo.png'
             height={65}
@@ -51,6 +60,9 @@ export const Header: React.FC<HeaderProps> = ({ className = '' }) => {
             variant='outlined'
             color='inherit'
             onClick={handleOpenModal}
+            sx={{
+              display: { xl: isAdmin == 'true' ? 'flex' : 'none' },
+            }}
           >
             <Typography variant='body1'>Выйти</Typography>
           </Button>
