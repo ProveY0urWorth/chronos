@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Place, Booking
 from .serializers import PlaceSerializer, BookingSerializer, BookingAdminSerializer
 from django.http import Http404
+from django.views.decorators.csrf import csrf_exempt
 
 class PlaceViewSet(viewsets.ModelViewSet):
     queryset = Place.objects.all()
@@ -19,6 +20,28 @@ class BookingAdminViewSet(viewsets.ModelViewSet):
     serializer_class = BookingAdminSerializer
     #permission_classes = [permissions.IsAuthenticated]
 
+    @csrf_exempt
+    def update(self, request, pk=None):
+        try:
+            booking = Booking.objects.get(pk=pk)
+        except Booking.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = BookingAdminSerializer(booking, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @csrf_exempt
+    def destroy(self, request, pk=None):
+        try:
+            booking = Booking.objects.get(pk=pk)
+        except Booking.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        booking.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CreateBookingViewSet(viewsets.ViewSet):
     serializer_class = BookingSerializer  # Define the serializer class
